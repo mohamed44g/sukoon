@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const API_URL = 'http://localhost:3000'; // رابط الـ NestJS
+export const API_URL = 'https://iceless-ardella-subpeltated.ngrok-free.dev'; // رابط الـ NestJS
 
 const api = axios.create({
   baseURL: API_URL,

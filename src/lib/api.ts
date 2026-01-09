@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const API_URL = 'https://86.48.29.80'; // رابط الـ NestJS
+export const API_URL = 'https://sukoon-perfumes.com'; // رابط الـ NestJS
 
 const api = axios.create({
   baseURL: API_URL,

@@ -12,7 +12,7 @@ import type {
 } from '@/types';
 
 // API Base URL
-const API_BASE_URL = 'https://86.48.29.80';
+const API_BASE_URL = 'https://sukoon-perfumes.com';
 
 // Create axios instance
 const apiClient: AxiosInstance = axios.create({

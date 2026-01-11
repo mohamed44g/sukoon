@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Box, Typography, Card, CardActionArea } from '@mui/material';
 import type { Category } from '@/types';
+
 import { API_URL } from '@/lib/api';
 
 interface CategoryCardProps {
@@ -37,10 +38,10 @@ const CategoryCard = ({ category}: CategoryCardProps) => {
         },
       }}
     >
-      <Link 
-        prefetch = {false}       
+      <CardActionArea
+        component={Link}
         href={`/category/${(category as any).slug || category.id}`}
-        style={{ height: '100%', position: 'relative' }}
+        sx={{ height: '100%', position: 'relative' }}
       >
         {/* Next.js Image Component */}
         <Image
@@ -106,7 +107,7 @@ const CategoryCard = ({ category}: CategoryCardProps) => {
             }}
           />
         </Box>
-      </Link>
+      </CardActionArea>
     </Card>
   );
 };

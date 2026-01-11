@@ -9,7 +9,6 @@ import {
   IconButton,
 } from '@mui/material';
 import { AddShoppingCart, RemoveShoppingCart } from '@mui/icons-material';
-import { motion } from 'framer-motion';
 import type { Product, ProductVariant } from '@/types';
 import { calculateDiscountPercentage, getDisplayPrice } from '@/types';
 import { API_URL } from '@/lib/api';
@@ -21,7 +20,6 @@ interface ProductCardProps {
   onAddToCart?: (product: Product, variant: ProductVariant, quantity: number) => void;
 }
 
-const MotionCard = motion(Card);
 
 const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
@@ -59,7 +57,7 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
       }}
     >
       {/* Image Container */}
-      <Link href={`/products/${product.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+      <Link prefetch = {false} href={`/products/${product.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
         <Box sx={{ position: 'relative', p: 2 }}>
           <Box
             sx={{

@@ -1,36 +1,12 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Box, Typography, Card, CardActionArea } from '@mui/material';
-import { motion } from 'framer-motion';
 import type { Category } from '@/types';
-import ManIcon from '@mui/icons-material/Man';
-import WomanIcon from '@mui/icons-material/Woman';
-import AcUnitIcon from '@mui/icons-material/AcUnit';
-import LightModeIcon from '@mui/icons-material/LightMode';
-import SpaIcon from '@mui/icons-material/Spa';
 import { API_URL } from '@/lib/api';
 
 interface CategoryCardProps {
   category: Category;
 }
-
-const getIcon = (iconName: string) => {
-  const iconStyle = { fontSize: 40, color: '#cf7317' };
-  switch (iconName) {
-    case 'man':
-      return <ManIcon sx={iconStyle} />;
-    case 'woman':
-      return <WomanIcon sx={iconStyle} />;
-    case 'ac_unit':
-      return <AcUnitIcon sx={iconStyle} />;
-    case 'light_mode':
-      return <LightModeIcon sx={iconStyle} />;
-    default:
-      return <SpaIcon sx={iconStyle} />;
-  }
-};
-
-const MotionCard = motion(Card);
 
 const CategoryCard = ({ category}: CategoryCardProps) => {
   return (
@@ -61,10 +37,10 @@ const CategoryCard = ({ category}: CategoryCardProps) => {
         },
       }}
     >
-      <CardActionArea
-        component={Link}
+      <Link 
+        prefetch = {false}       
         href={`/category/${(category as any).slug || category.id}`}
-        sx={{ height: '100%', position: 'relative' }}
+        style={{ height: '100%', position: 'relative' }}
       >
         {/* Next.js Image Component */}
         <Image
@@ -130,7 +106,7 @@ const CategoryCard = ({ category}: CategoryCardProps) => {
             }}
           />
         </Box>
-      </CardActionArea>
+      </Link>
     </Card>
   );
 };

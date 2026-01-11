@@ -1,6 +1,6 @@
 "use client"
 import { Box, Container, Typography, Grid, Stack } from '@mui/material';
-import { motion } from 'framer-motion';
+import FadeInUp from '@/components/FadeInUp';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import HeroSection from '@/components/HeroSection';
@@ -8,14 +8,9 @@ import ProductCard from '@/components/ProductCard';
 import CategoryCard from '@/components/CategoryCard';
 import OffersSection from '@/components/OffersSection';
 import TestimonialsSection from '@/components/TestimonialsSection';
-// import NewsletterSection from '@/components/NewsletterSection';
 import QuoteBanner from '@/components/QuoteBanner';
 import type { Product, Category, ProductVariant } from '@/types';
 import { useCart } from '@/contexts/CartContext';
-
-const MotionBox = motion.create(Box);
-const MotionGrid = motion.create(Grid);
-
 
 const PageClient = ({products, categories, offers} : {products : Product[], categories: Category[], offers : Product[]}) => {
   const { addToCart } = useCart();
@@ -39,12 +34,7 @@ const PageClient = ({products, categories, offers} : {products : Product[], cate
 
         {/* Categories Section */}
         <Box component="section" sx={{ position: 'relative', zIndex: 10 }}>
-          <MotionBox
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }} // الحل السحري لمشكلة إعادة الرسم واللاغ
-            transition={{ duration: 0.6 }}
-          >
+          <FadeInUp>
             <Stack alignItems="center" spacing={2} sx={{ mb: 5 }}>
               <Typography
                 variant="h2"
@@ -75,20 +65,15 @@ const PageClient = ({products, categories, offers} : {products : Product[], cate
                 " لسنا في عجلة. العطر هنا لا يلاحقك، بل ينتظرك… حتى تكون مستعدًا أن تشعر، لا أن تشم "
               </Typography>
             </Stack>
-          </MotionBox>
+          </FadeInUp>
 
           <Grid container spacing={3} mt={7}>
             {categories.map((category, index) => (
-              <MotionGrid
-                size={{xs: 6, sm: 6, md: 3}}
-                key={category.id}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.1 + index * 0.1 }}
-              >
-                <CategoryCard category={category}/>
-              </MotionGrid>
+              <Grid size={{xs: 6, sm: 6, md: 3}} key={category.id}>
+                <FadeInUp delay={index * 0.1}>
+                  <CategoryCard category={category}/>
+                </FadeInUp>
+              </Grid>
             ))}
           </Grid>
         </Box>
@@ -98,12 +83,7 @@ const PageClient = ({products, categories, offers} : {products : Product[], cate
 
         {/* Products Section */}
         <Box component="section" sx={{ mt: 20, position: 'relative', zIndex: 10 }}>
-          <MotionBox
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+          <FadeInUp>
             <Stack alignItems="center" spacing={2} sx={{ mb: 6 }}>
               <Typography
                 variant="h2"
@@ -134,20 +114,15 @@ const PageClient = ({products, categories, offers} : {products : Product[], cate
                 " في كل نفَس حكاية، وفي كل أثر بقايا ذاكرة. نصنع العطر ليُقيم فيك، لا ليمرّ بك مرور العابرين "
               </Typography>
             </Stack>
-          </MotionBox>
+          </FadeInUp>
 
           <Grid container spacing={4} mt={7} justifyContent={'center'}>
             {products.map((product, index) => (
-              <MotionGrid
-                size={{xs: 9, sm: 6, md: 3}}
-                key={product.id}
-                initial={{ opacity: 0, y: 50, scale: 0.95 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.15 + index * 0.1 }}
-              >
-                <ProductCard product={product} onAddToCart={handleAddToCart} />
-              </MotionGrid>
+              <Grid size={{xs: 9, sm: 6, md: 3}} key={product.id}>
+                <FadeInUp delay={0.1 + (index * 0.05)}>
+                  <ProductCard product={product} onAddToCart={handleAddToCart} />
+                </FadeInUp>
+              </Grid>
             ))}
           </Grid>
         </Box>

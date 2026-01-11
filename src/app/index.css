@@ -7,3 +7,17 @@
 body {
     scroll-behavior: smooth;
 }
+
+.fade-up-element {
+  opacity: 0;
+  transform: translate3d(0, 40px, 0); /* 3d لتفعيل الـ GPU */
+  transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+              transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: opacity, transform; /* تخبر المتصفح بتجهيز نفسه */
+}
+
+/* الحالة النهائية: ظاهر وفي مكانه */
+.fade-up-element.in-view {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}

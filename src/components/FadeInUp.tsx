@@ -1,27 +1,55 @@
-// src/components/FadeInUp.tsx
 'use client';
-import { Box, BoxProps } from '@mui/material';
+import { useRef, useEffect, useState, ReactNode, ElementType } from 'react';
 
-interface FadeInUpProps extends BoxProps {
-  delay?: string;
+interface FadeInUpProps {
+  children: ReactNode;
+  delay?: number; // التأخير بالثواني
+  duration?: number; // المدة بالثواني (اختياري، لأننا حددناها في CSS)
+  className?: string;
+  tag?: ElementType; // نوع العنصر (div, section, li, etc.)
 }
 
-export default function FadeInUp({ children, delay = '0s', sx, ...props }: FadeInUpProps) {
+export default function FadeInUp({ 
+  children, 
+  delay = 0, 
+  className = '',
+  tag: Component = 'div' // الافتراضي div
+}: FadeInUpProps) {
+  const [isInView, setIsInView] = useState(false);
+  const ref = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          observer.unobserve(entry.target); // توقف عن المراقبة بعد الظهور (Once: true)
+        }
+      },
+      {
+        threshold: 0.1, // يظهر عندما يبان 10% منه
+        rootMargin: '50px', // يبدأ التحميل قبل ما يدخل الشاشة بشوية
+      }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) observer.unobserve(ref.current);
+    };
+  }, []);
+
   return (
-    <Box
-      sx={{
-        animation: 'fadeInUp 0.8s ease-out forwards',
-        opacity: 0,
-        animationDelay: delay,
-        '@keyframes fadeInUp': {
-          '0%': { opacity: 0, transform: 'translateY(40px)' },
-          '100%': { opacity: 1, transform: 'translateY(0)' },
-        },
-        ...sx,
+    <Component
+      ref={ref}
+      className={`fade-up-element ${isInView ? 'in-view' : ''} ${className}`}
+      style={{
+        transitionDelay: `${delay}s`, // تطبيق التأخير
       }}
-      {...props}
     >
       {children}
-    </Box>
+    </Component>
   );
 }

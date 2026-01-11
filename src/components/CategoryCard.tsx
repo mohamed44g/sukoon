@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Box, Typography, Card, CardActionArea } from '@mui/material';
 import { motion } from 'framer-motion';
 import type { Category } from '@/types';
@@ -67,18 +68,19 @@ const CategoryCard = ({ category}: CategoryCardProps) => {
       <CardActionArea
         component={Link}
         href={`/category/${(category as any).slug || category.id}`}
-        sx={{ height: '100%' }}
+        sx={{ height: '100%', position: 'relative' }}
       >
-        {/* Background Image */}
-        <Box
+        {/* Next.js Image Component */}
+        <Image
+          src={`${API_URL}${category.image_url}`}
+          alt={category.name}
+          fill
           className="bg-image"
-          sx={{
-            position: 'absolute',
-            inset: 0,
-            backgroundImage: `url('${API_URL}${category.image_url}')`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          style={{
+            objectFit: 'cover',
             transition: 'transform 1s',
+            zIndex: 0,
           }}
         />
 
@@ -91,6 +93,7 @@ const CategoryCard = ({ category}: CategoryCardProps) => {
             background: 'linear-gradient(to top, #1A1611, rgba(26, 22, 17, 0.5), transparent)',
             opacity: 0.9,
             transition: 'opacity 0.5s',
+            zIndex: 1, // تأكدنا أن الـ overlay فوق الصورة
           }}
         />
 

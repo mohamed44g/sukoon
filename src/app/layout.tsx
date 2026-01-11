@@ -4,6 +4,8 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import theme from '@/theme/theme';
 import { CartProvider } from '@/contexts/CartContext';
+import './index.css';
+import NextTopLoader from 'nextjs-toploader';
 
 // 1. إعداد الـ Viewport (منفصل في Next.js 14+)
 export const viewport: Viewport = {
@@ -91,6 +93,10 @@ export default function RootLayout({
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <CartProvider>
+              <NextTopLoader 
+                color="#cf7317" // لون البراند بتاعك
+                showSpinner={false}
+              />
              {children}
           </CartProvider>
           </ThemeProvider>

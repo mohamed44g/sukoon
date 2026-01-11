@@ -2,7 +2,6 @@ import { useState } from 'react';
 import {
   Box,
   Card,
-  CardMedia,
   CardContent,
   Typography,
   Chip,
@@ -15,6 +14,7 @@ import type { Product, ProductVariant } from '@/types';
 import { calculateDiscountPercentage, getDisplayPrice } from '@/types';
 import { API_URL } from '@/lib/api';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface ProductCardProps {
   product: Product;
@@ -43,10 +43,11 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
   return (
     <MotionCard
       initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
       transition={{ duration: 0.5 }}
       sx={{
-        height: '100%', // 1. الكارت ياخد الطول الكامل
+        height: '100%',
         display: 'flex',
         flexDirection: 'column',
         border: '1px solid',
@@ -69,7 +70,8 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
               borderRadius: 3,
               overflow: 'hidden',
               position: 'relative',
-              aspectRatio: '3/4', // يحافظ على نسبة أبعاد الصورة موحدة للكل
+              aspectRatio: '3/4',
+              bgcolor: 'rgba(0,0,0,0.05)'
             }}
           >
             {/* Discount Badge */}
@@ -107,16 +109,26 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
               />
             )}
 
-            <CardMedia
-              component="div"
-              sx={{
-                height: '100%',
-                backgroundImage: `url("${API_URL}${product.images?.[0] || '/placeholder.svg'}")`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
+            {/* Next.js Optimized Image */}
+            <Image
+              src={`${API_URL}${product.images?.[0] || '/placeholder.svg'}`}
+              alt={product.name}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              style={{ 
+                objectFit: 'cover',
                 transition: 'transform 0.7s',
-                '&:hover': { transform: 'scale(1.1)' },
               }}
+              className="hover:scale-110" // أو يمكنك استخدام sx في الـ Box الأب للتحكم في الـ hover
+            />
+            {/* Hover effect hack via styles since Next/Image handles styles differently */}
+            <Box 
+                sx={{ 
+                    position: 'absolute', 
+                    inset: 0, 
+                    transition: 'background 0.3s',
+                    '&:hover': { backgroundColor: 'rgba(0,0,0,0.02)' } // Optional slight overlay
+                }} 
             />
           </Box>
         </Box>
@@ -125,12 +137,12 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
       {/* Content */}
       <CardContent 
         sx={{ 
-          flexGrow: 1, // 2. يملأ المساحة المتبقية
+          flexGrow: 1, 
           display: 'flex', 
           flexDirection: 'column', 
           gap: 1.5, 
           p: 2.5,
-          justifyContent: 'space-between' // يوزع العناصر
+          justifyContent: 'space-between'
         }}
       >
         <Box>
@@ -140,18 +152,16 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
             sx={{
               fontFamily: '"Amiri", serif',
               fontWeight: 700,
-              fontSize: { xs: '1.25rem', lg: '1.5rem' }, // صغرت الخط سنة عشان الشكل
-              color: 'text.primary', // عدلت اللون ليكون مقروء (كان white)
+              fontSize: { xs: '1.25rem', lg: '1.5rem' },
+              color: 'text.primary',
               textAlign: 'center',
               lineHeight: 1.3,
               mb: 1,
-              
-              // 3. التعديل المهم لتوحيد الطول (حجز مساحة سطرين)
               display: '-webkit-box',
               overflow: 'hidden',
               WebkitBoxOrient: 'vertical',
-              WebkitLineClamp: 2, // حد أقصى سطرين
-              minHeight: '3.2rem', // اجباري يحجز مساحة سطرين حتى لو الاسم قصير
+              WebkitLineClamp: 2,
+              minHeight: '3.2rem',
             }}
           >
             {product.name}
@@ -168,7 +178,7 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
               WebkitBoxOrient: 'vertical',
               WebkitLineClamp: 2,
               textOverflow: 'ellipsis',
-              minHeight: '2.5rem', // اختياري: حجز مساحة للوصف أيضاً
+              minHeight: '2.5rem',
               px: 0,
             }}
           >
@@ -213,7 +223,6 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
         />
 
         {/* Price and Add to Cart */}
-        {/* mt: 'auto' بتدفع هذا الجزء لأسفل الكارت تماماً */}
         <Box
           sx={{
             mt: 'auto', 
@@ -240,7 +249,7 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
               variant="h6"
               sx={{
                 fontWeight: 700,
-                color: 'text.primary', // عدلت اللون
+                color: 'text.primary',
                 display: 'flex',
                 alignItems: 'baseline',
                 gap: 0.5,

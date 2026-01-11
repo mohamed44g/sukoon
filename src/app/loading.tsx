@@ -1,19 +1,22 @@
 // src/app/products/[productId]/loading.tsx
-import { Box, Skeleton, Container, Grid } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
 
 export default function Loading() {
   return (
-    <Container sx={{ py: 8 }}>
-      <Grid container spacing={4}>
-        <Grid size = {{xs: 12, md: 6}} >
-          <Skeleton variant="rectangular" height={400} sx={{ borderRadius: 4 }} />
-        </Grid>
-        <Grid size = {{xs: 12, md: 6}}>
-          <Skeleton variant="text" height={60} width="80%" />
-          <Skeleton variant="text" height={30} width="40%" />
-          <Skeleton variant="rectangular" height={100} sx={{ mt: 4 }} />
-        </Grid>
-      </Grid>
-    </Container>
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh', // ارتفاع مناسب عشان تيجي في نص الشاشة المرئية
+        width: '100%',
+      }}
+    >
+      <CircularProgress 
+        size={60} // حجم الدائرة
+        thickness={4} // سمك الخط
+        sx={{ color: 'primary.main' }} // لون البراند (الذهبي)
+      />
+    </Box>
   );
 }

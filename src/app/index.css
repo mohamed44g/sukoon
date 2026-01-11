@@ -1,22 +1,45 @@
+/* src/app/globals.css */
+:root {
+  /* تغيير اللون الافتراضي ليطابق لون الثيم الغامق الخاص بك */
+  --background: #1a120b; 
+  --foreground: #ededed;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  /* إضافة هذا السطر مهم جداً لمنع الوميض الأبيض */
+  background-color: var(--background); 
+}
+
+body {
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
 }
 
-body {
-    scroll-behavior: smooth;
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
+/* كلاسات الأنيميشن (تأكد من وجودها إذا كنت تستخدم FadeInUp بـ CSS) */
 .fade-up-element {
   opacity: 0;
-  transform: translate3d(0, 40px, 0); /* 3d لتفعيل الـ GPU */
+  transform: translate3d(0, 40px, 0);
   transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
               transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  will-change: opacity, transform; /* تخبر المتصفح بتجهيز نفسه */
+  will-change: opacity, transform;
 }
 
-/* الحالة النهائية: ظاهر وفي مكانه */
 .fade-up-element.in-view {
   opacity: 1;
   transform: translate3d(0, 0, 0);

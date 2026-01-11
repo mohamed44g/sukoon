@@ -34,11 +34,7 @@ const MotionCard = motion(Card);
 
 const CategoryCard = ({ category}: CategoryCardProps) => {
   return (
-    <MotionCard
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      whileHover={{ y: -8 }}
-      transition={{ duration: 0.3 }}
+    <Card
       sx={{
         height: 320,
         position: 'relative',
@@ -135,7 +131,7 @@ const CategoryCard = ({ category}: CategoryCardProps) => {
           />
         </Box>
       </CardActionArea>
-    </MotionCard>
+    </Card>
   );
 };
 

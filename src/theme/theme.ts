@@ -62,11 +62,6 @@ const theme = createTheme({
       styleOverrides: {
         body: {
           backgroundColor: '#1a120b',
-          // إضافة CSS Animation للـ FadeInUp هنا
-          '@keyframes fadeInUp': {
-            '0%': { opacity: 0, transform: 'translateY(20px)' },
-            '100%': { opacity: 1, transform: 'translateY(0)' },
-          },
         },
       },
     },

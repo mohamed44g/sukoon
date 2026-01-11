@@ -1,5 +1,6 @@
 import { categoriesApi, productsApi } from "@/services/api";
 import PageClient from "./pageClient";
+export const dynamic = 'force-dynamic';
 
 
 const Main = async () => {
@@ -9,8 +10,9 @@ const Main = async () => {
   
   try {
     latestProducts = await productsApi.getLatest();
-    categories = await categoriesApi.getAll()
-    offers = await productsApi.getLatestOffers()
+    categories = await categoriesApi.getAll();
+    offers = await productsApi.getLatestOffers();
+    console.log(categories);
   } catch (error) {
     console.error("Failed to fetch latest products:", error);
     // ممكن تخليها مصفوفة فاضية عشان الموقع يفتح حتى لو مفيش منتجات

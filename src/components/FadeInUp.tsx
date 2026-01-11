@@ -6,14 +6,16 @@ interface FadeInUpProps {
   delay?: number; // التأخير بالثواني
   duration?: number; // المدة بالثواني (اختياري، لأننا حددناها في CSS)
   className?: string;
-  tag?: ElementType; // نوع العنصر (div, section, li, etc.)
+  tag?: ElementType;
+  sx?: any // نوع العنصر (div, section, li, etc.)
 }
 
 export default function FadeInUp({ 
   children, 
   delay = 0, 
   className = '',
-  tag: Component = 'div' // الافتراضي div
+  tag: Component = 'div',
+  sx// الافتراضي div
 }: FadeInUpProps) {
   const [isInView, setIsInView] = useState(false);
   const ref = useRef<HTMLElement>(null);
@@ -46,7 +48,8 @@ export default function FadeInUp({
       ref={ref}
       className={`fade-up-element ${isInView ? 'in-view' : ''} ${className}`}
       style={{
-        transitionDelay: `${delay}s`, // تطبيق التأخير
+        transitionDelay: `${delay}s`,
+        ...sx // تطبيق التأخير
       }}
     >
       {children}

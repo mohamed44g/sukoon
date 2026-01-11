@@ -87,8 +87,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ar" dir="rtl">
-      <body>
+    <html lang="ar" dir="rtl" style={{ backgroundColor: '#1a120b' }}>
+      <body style={{ backgroundColor: '#1a120b' }}>
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
             <CssBaseline />

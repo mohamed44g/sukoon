@@ -2,8 +2,8 @@ import { Box, Container, Typography, Button } from '@mui/material';
 import { motion } from 'framer-motion';
 import FilterVintageIcon from '@mui/icons-material/FilterVintage';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import FadeInUp from './FadeInUp';
 
-const MotionBox = motion.create(Box);
 const MotionTypography = motion.create(Typography);
 
 const HeroSection = () => {
@@ -41,10 +41,7 @@ const HeroSection = () => {
       />
 
       {/* Decorative Top Diamonds */}
-      <MotionBox
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 0.5, y: 0 }}
-        transition={{ duration: 0.8 }}
+      <FadeInUp
         sx={{
           position: 'absolute',
           top: 0,
@@ -60,7 +57,7 @@ const HeroSection = () => {
         <Typography sx={{ color: 'rgba(207, 115, 23, 0.3)', letterSpacing: '1em', fontSize: '0.75rem' }}>
           ❖ ❖ ❖ ❖ ❖ ❖ ❖ ❖ ❖ ❖ ❖ ❖
         </Typography>
-      </MotionBox>
+      </FadeInUp>
 
       {/* Content */}
       <Container
@@ -77,10 +74,7 @@ const HeroSection = () => {
         }}
       >
         {/* Subtitle */}
-        <MotionBox
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 0.8, y: 0 }}
-          transition={{ duration: 0.6 }}
+        <FadeInUp
           sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 2 }}
         >
           <Box sx={{ height: '1px', width: 48, bgcolor: 'primary.main' }} />
@@ -96,13 +90,11 @@ const HeroSection = () => {
             تشكيلة حصرية
           </Typography>
           <Box sx={{ height: '1px', width: 48, bgcolor: 'primary.main' }} />
-        </MotionBox>
+        </FadeInUp>
 
         {/* Main Title */}
-        <MotionBox
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+        <FadeInUp
+            delay = {0.2}
         >
           <Typography
             variant="h1"
@@ -125,7 +117,7 @@ const HeroSection = () => {
              
             </Box>
           </Typography>
-        </MotionBox>
+        </FadeInUp>
 
         {/* Description */}
         <MotionTypography
@@ -147,10 +139,8 @@ const HeroSection = () => {
         </MotionTypography>
 
         {/* Quote Box */}
-        <MotionBox
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.6 }}
+        <FadeInUp
+          delay= {0.6}
           sx={{
             maxWidth: 700,
             mx: 'auto',
@@ -164,20 +154,6 @@ const HeroSection = () => {
         >
           <Typography
             sx={{
-              position: 'absolute',
-              top: -12,
-              left: '50%',
-              transform: 'translateX(-50%)',
-              bgcolor: '#1a120b',
-              px: 1,
-              color: 'primary.main',
-              fontSize: '1.25rem',
-            }}
-          >
-            ❦
-          </Typography>
-          <Typography
-            sx={{
               fontFamily: '"Amiri", serif',
               fontSize: { xs: '1rem', md: '1.1rem' },
               fontStyle: 'italic',
@@ -187,29 +163,11 @@ const HeroSection = () => {
           >
             "هنا لا تُعرض روائح… هنا يُفتح أثر. خطوة واحدة، وتغادر صخب العالم إلى مساحة أبطأ، حيث يتكلم الصمت، وتبقى الرائحة."
           </Typography>
-          <Typography
-            sx={{
-              position: 'absolute',
-              bottom: -12,
-              left: '50%',
-              transform: 'translateX(-50%)',
-              bgcolor: '#1a120b',
-              px: 1,
-              color: 'primary.main',
-              fontSize: '1.25rem',
-            }}
-          >
-            ❦
-          </Typography>
-        </MotionBox>
+        </FadeInUp>
 
         {/* CTA Button */}
-        <MotionBox
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
+        <FadeInUp
+          delay= {0.8}
         >
           <Button
             variant="outlined"
@@ -225,6 +183,7 @@ const HeroSection = () => {
               overflow: 'hidden',
               position: 'relative',
               transition: 'all 0.5s',
+              mt: 2,
               '&:hover': {
                 bgcolor: 'primary.main',
                 color: 'white',
@@ -237,7 +196,7 @@ const HeroSection = () => {
           >
             اكتشف المجموعة الملكية
           </Button>
-        </MotionBox>
+        </FadeInUp>
       </Container>
     </Box>
   );

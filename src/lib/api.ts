@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // export const API_URL = 'https://sukoon-perfumes.com';
-export const API_URL = process.env.Node_env === 'production' ? 'https://sukoon-perfumes.com' : 'http://localhost:3000';
+export const API_URL = 'https://sukoon-perfumes.com';
 
 const api = axios.create({
   baseURL: API_URL,
@@ -20,5 +20,6 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
+
 
 export default api;

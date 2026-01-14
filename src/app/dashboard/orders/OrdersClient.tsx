@@ -224,7 +224,7 @@ const OrdersClient = ({ initialOrders }: OrdersClientProps) => {
                 <TableHead><TableRow sx={{ bgcolor: '#1A1611' }}>
                   <TableCell align = 'right' sx={{ color: 'text.secondary' }}>رقم الطلب</TableCell>
                   <TableCell align = 'right' sx={{ color: 'text.secondary' }}>العميل</TableCell>
-                  <TableCell dsx={{ color: 'text.secondary' }}>التاريخ</TableCell>
+                  <TableCell sx={{ color: 'text.secondary' }}>التاريخ</TableCell>
                   <TableCell sx={{ color: 'text.secondary' }}>الحالة</TableCell>
                   <TableCell sx={{ color: 'text.secondary' }}>المبلغ</TableCell>
                   <TableCell sx={{ color: 'text.secondary' }}>إجراءات</TableCell>

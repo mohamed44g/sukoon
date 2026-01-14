@@ -210,7 +210,9 @@ const DashboardProducts = () => {
       }));
       data.append('variants', JSON.stringify(formattedVariants));
 
-      data.append('existingImages', JSON.stringify(existingImages));
+      if (editingProduct) {
+        data.append('existingImages', JSON.stringify(existingImages));
+      }
       
       newFiles.forEach(file => {
         data.append('files', file);

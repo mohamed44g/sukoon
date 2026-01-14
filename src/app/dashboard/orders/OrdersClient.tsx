@@ -19,9 +19,11 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import PrintIcon from '@mui/icons-material/Print';
 import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close'; // أيقونة الإغلاق
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 
 import { ordersApi } from '@/services/api';
 import { Order, OrderStatus } from '@/types';
+import Link from 'next/link';
 
 // تعريف واجهة تفاصيل المنتج داخل الطلب
 interface OrderItem {
@@ -186,7 +188,7 @@ const OrdersClient = ({ initialOrders }: OrdersClientProps) => {
               </Box>
               <Stack direction="row" gap={2} alignItems="center">
                 <TextField type="month" value={selectedMonth} onChange={(e) => setSelectedMonth(e.target.value)} size="small" sx={{ bgcolor: '#252019', borderRadius: 1, border: '1px solid rgba(212, 165, 116, 0.3)', '& input': { color: 'white' }, '& fieldset': { border: 'none' }, colorScheme: 'dark' }} />
-                <Button variant="outlined" startIcon={<DownloadIcon />} sx={{ borderColor: 'rgba(212, 165, 116, 0.3)', color: 'text.primary' }}>تصدير</Button>
+            
               </Stack>
             </Stack>
 
@@ -220,9 +222,9 @@ const OrdersClient = ({ initialOrders }: OrdersClientProps) => {
             <TableContainer sx={{ bgcolor: '#252019', borderRadius: 3, border: '1px solid rgba(212, 165, 116, 0.15)', opacity: loading ? 0.5 : 1, transition: 'opacity 0.2s' }}>
               <Table>
                 <TableHead><TableRow sx={{ bgcolor: '#1A1611' }}>
-                  <TableCell sx={{ color: 'text.secondary' }}>رقم الطلب</TableCell>
-                  <TableCell sx={{ color: 'text.secondary' }}>العميل</TableCell>
-                  <TableCell sx={{ color: 'text.secondary' }}>التاريخ</TableCell>
+                  <TableCell align = 'right' sx={{ color: 'text.secondary' }}>رقم الطلب</TableCell>
+                  <TableCell align = 'right' sx={{ color: 'text.secondary' }}>العميل</TableCell>
+                  <TableCell dsx={{ color: 'text.secondary' }}>التاريخ</TableCell>
                   <TableCell sx={{ color: 'text.secondary' }}>الحالة</TableCell>
                   <TableCell sx={{ color: 'text.secondary' }}>المبلغ</TableCell>
                   <TableCell sx={{ color: 'text.secondary' }}>إجراءات</TableCell>
@@ -233,10 +235,10 @@ const OrdersClient = ({ initialOrders }: OrdersClientProps) => {
                     const status = statusConfig[order.status] || { label: order.status, color: '#gray', bgColor: '#333' };
                     return (
                       <TableRow key={order.id} sx={{ '&:hover': { bgcolor: 'rgba(212, 165, 116, 0.05)' } }}>
-                        <TableCell sx={{ color: 'text.primary', fontWeight: 500 }}>#{order.id}</TableCell>
-                        <TableCell>
+                        <TableCell align = 'right' sx={{ color: 'text.primary', fontWeight: 500 }}>#{order.id}</TableCell>
+                        <TableCell align = 'right'>
                             <Stack direction="row" alignItems="center" gap={1.5}>
-                                <Avatar sx={{ width: 32, height: 32, bgcolor: 'rgba(212, 165, 116, 0.15)', color: 'primary.main', fontSize: '0.75rem' }}>{order.customer_name.charAt(0)}</Avatar>
+                          
                                 <Box>
                                     <Typography variant="body2" sx={{ color: 'text.primary' }}>{order.customer_name}</Typography>
                                     <Typography variant="caption" sx={{ color: 'text.secondary' }}>{order.customer_phone}</Typography>
@@ -262,6 +264,18 @@ const OrdersClient = ({ initialOrders }: OrdersClientProps) => {
                             >
                                 <VisibilityIcon />
                             </IconButton>
+
+                              <Link 
+                                href={`https://wa.me/+20${order.customer_phone}?text=`}
+                            >
+                              <IconButton 
+                                size="small"
+                                sx={{ color: 'success.main' }} 
+                                title="اتصل بالعميل"
+                            >
+                                <WhatsAppIcon />
+                            </IconButton>
+                            </Link>
     
                         </TableCell>
                       </TableRow>

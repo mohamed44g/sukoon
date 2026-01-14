@@ -13,6 +13,7 @@ import Image from 'next/image';
 import { Product, ProductVariant } from '@/types';
 import { useCart } from '@/contexts/CartContext';
 import { API_URL } from '@/lib/api';
+import FadeInUp from './FadeInUp';
 
 const MotionBox = motion.create(Box);
 
@@ -77,7 +78,6 @@ const OfferSlide = ({ product }: { product: Product }) => {
 
           {hasDiscount && (
             <Chip
-              icon={<LocalFireDepartmentIcon sx={{ fontSize: 14, color: 'white !important' }} />}
               label={`خصم ${discountPercent}%`}
               sx={{
                 position: 'absolute',
@@ -122,7 +122,7 @@ const OfferSlide = ({ product }: { product: Product }) => {
             />
 
             <Box sx={{ zIndex: 10 }}>
-              <Typography variant="h3" sx={{ fontFamily: '"Amiri", serif', fontWeight: 700, fontSize: { xs: '2rem', lg: '2.75rem' }, color: 'white', lineHeight: 1.3, mb: 1 }}>
+              <Typography variant="h3" sx={{ fontFamily: '"Amiri", serif', fontWeight: 700, fontSize: { xs: '1.5rem', lg: '2.75rem' }, color: 'white', lineHeight: 1.3, mb: 1 }}>
                 {product.name}
               </Typography>
             </Box>
@@ -131,7 +131,7 @@ const OfferSlide = ({ product }: { product: Product }) => {
               sx={{
                 color: 'text.secondary',
                 lineHeight: 1.8,
-                fontSize: '1.1rem',
+                fontSize: {xs: '1rem',sm:'1.1rem'},
                 fontWeight: 300,
                 fontFamily: '"Amiri", serif',
                 borderRight: '2px solid',
@@ -239,11 +239,7 @@ const OffersSection = ({ offers }: { offers: Product[] }) => {
   return (
     <Box component="section" sx={{ py: 0, mt: 20 }}>
       {/* العنوان */}
-      <MotionBox
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
+      <FadeInUp
       >
         <Stack alignItems="center" spacing={2} sx={{ mb: 4 }}>
           <Typography
@@ -275,7 +271,7 @@ const OffersSection = ({ offers }: { offers: Product[] }) => {
             "كأنك تمشي بعد المطر، الأرض ما زالت دافئة، والهواء يحمل سرًّا لا يُقال… هذه ليست رائحة، هذا إحساس وجد طريقه إليك."
           </Typography>
         </Stack>
-      </MotionBox>
+      </FadeInUp>
 
       {/* منطقة الكاروسيل */}
       <Box sx={{ position: 'relative', mt: 7 }}>

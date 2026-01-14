@@ -8,6 +8,7 @@ import Footer from '@/components/Footer';
 import ProductCard from '@/components/ProductCard';
 import type { Product, ProductVariant } from '@/types';
 import { useCart } from '@/contexts/CartContext';
+import FadeInUp from '@/components/FadeInUp';
 
 const MotionBox = motion.create(Box);
 
@@ -60,12 +61,12 @@ const OffersPageClient = ({products} : {products : Product[]}) => {
           </Typography>
         </Stack>
 
-        <Grid container spacing={4}>
+        <Grid container spacing={4} justifyContent={'center'} alignItems={'center'}>
           {products.map((product, index) => (
-            <Grid size = {{xs:12, sm: 6, lg: 3}} key={product.id}>
-              <MotionBox initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }}>
+            <Grid size = {{xs:10, sm: 6, lg: 3}} key={product.id}>
+              <FadeInUp>
                 <ProductCard product={product} onAddToCart={handleAddToCart} />
-              </MotionBox>
+              </FadeInUp>
             </Grid>
           ))}
         </Grid>

@@ -14,7 +14,7 @@ const HeroSection = () => {
         position: 'relative',
         width: '100%',
         height: "100vh",
-        backgroundImage: `linear-gradient(to bottom, rgba(26, 18, 11, 0.7), rgba(26, 18, 11, 1)), url("pic2.jpeg")`,
+        backgroundImage: `linear-gradient(to bottom, rgba(26, 18, 11, 0.3), rgba(26, 18, 11, 1)), url("background.jpeg")`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         overflow: 'hidden',
@@ -82,7 +82,7 @@ const HeroSection = () => {
             sx={{
               color: 'primary.main',
               letterSpacing: '0.3em',
-              fontSize: { xs: '0.85rem', md: '1rem' },
+              fontSize: { xs: '0.70rem', md: '1rem' },
               fontWeight: 700,
               textTransform: 'uppercase',
             }}
@@ -100,7 +100,7 @@ const HeroSection = () => {
             variant="h1"
             sx={{
               fontFamily: '"Amiri", serif',
-              fontSize: { xs: '2.5rem', md: '4.5rem', lg: '5.5rem' },
+              fontSize: { xs: '2.4rem', md: '4.5rem', lg: '5.5rem' },
               fontWeight: 700,
               lineHeight: 1.2,
               textShadow: '0 4px 20px rgba(0,0,0,0.5)',
@@ -126,7 +126,7 @@ const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.4 }}
           sx={{
             fontFamily: '"Amiri", serif',
-            fontSize: { xs: '1.25rem', md: '1.5rem' },
+            fontSize: { xs: '1.20rem', md: '1.5rem' },
             fontWeight: 300,
             lineHeight: 1.8,
             maxWidth: 800,
@@ -155,7 +155,7 @@ const HeroSection = () => {
           <Typography
             sx={{
               fontFamily: '"Amiri", serif',
-              fontSize: { xs: '1rem', md: '1.1rem' },
+              fontSize: { xs: '.85rem', md: '1.1rem' },
               fontStyle: 'italic',
               lineHeight: 2,
               color: 'rgba(255, 255, 255, 0.7)',
@@ -175,7 +175,7 @@ const HeroSection = () => {
               px: 5,
               py: 2,
               borderRadius: 50,
-              fontSize: '1.1rem',
+              fontSize: '1rem',
               fontFamily: '"Amiri", serif',
               borderColor: 'primary.main',
               color: 'primary.main',
@@ -191,8 +191,7 @@ const HeroSection = () => {
                 boxShadow: '0 0 30px rgba(207, 115, 23, 0.3)',
               },
             }}
-            startIcon={<FilterVintageIcon sx={{ fontSize: 16 }} />}
-            endIcon={<ArrowBackIcon sx={{ fontSize: 18 }} />}
+            endIcon={<ArrowBackIcon sx={{ fontSize: 14, mr: 1 }} />}
           >
             اكتشف المجموعة الملكية
           </Button>

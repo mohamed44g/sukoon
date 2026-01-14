@@ -74,7 +74,7 @@ const CheckoutPage = () => {
         customerName: formData.customerName,
         customerPhone: formData.phone, 
         customerAddress: `${formData.governorate} - ${formData.addressDetails}`,
-        shippingCost: shippingCost, 
+        shippingCost: formData.governorate, 
         items: items.map((item) => ({
           productId: item.product.id,
           size: item.selectedVariant.size,

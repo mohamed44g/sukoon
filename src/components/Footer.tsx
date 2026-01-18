@@ -18,6 +18,7 @@ import {
   LocationOn as LocationIcon,
 } from '@mui/icons-material';
 import React from 'react';
+import SocialMediaLinks from './SocialMediaLinks';
 
 const Footer = () => {
   return (
@@ -35,7 +36,7 @@ const Footer = () => {
       <Container maxWidth="xl">
         <Grid container spacing={6}>
           {/* Brand Info */}
-          <Grid size = {{xs: 12, md: 6}}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <Stack spacing={3}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                 <Box
@@ -71,29 +72,13 @@ const Footer = () => {
                 هنا لا تُعرض روائح… هنا يُفتح أثر. خطوة واحدة، وتغادر صخب العالم إلى مساحة أبطأ.
               </Typography>
               <Stack direction="row" spacing={1}>
-                {[FacebookIcon, InstagramIcon, TwitterIcon].map((Icon, index) => (
-                  <IconButton
-                    key={index}
-                    sx={{
-                      border: '1px solid',
-                      borderColor: 'divider',
-                      color: 'text.secondary',
-                      '&:hover': {
-                        bgcolor: 'primary.main',
-                        borderColor: 'primary.main',
-                        color: 'primary.contrastText',
-                      },
-                    }}
-                  >
-                    <Icon fontSize="small" />
-                  </IconButton>
-                ))}
+                <SocialMediaLinks />
               </Stack>
             </Stack>
           </Grid>
 
           {/* Quick Links */}
-          <Grid size = {{xs: 6, md: 2}}>
+          <Grid size={{ xs: 6, md: 2 }}>
             <Typography
               variant="h6"
               sx={{
@@ -115,26 +100,26 @@ const Footer = () => {
                 { label: 'العروض', href: '/offers' },
                 { label: 'قصتنا', href: '/about' },
               ].map((item) => (
-                <Link href={item.href} key={item.label} style={{textDecoration: 'none'}}>
+                <Link href={item.href} key={item.label} style={{ textDecoration: 'none' }}>
                   <Typography
-                  key={item.label}
-                  sx={{
-                    color: 'text.secondary',
-                    textDecoration: 'none',
-                    fontFamily: '"Amiri", serif',
-                    transition: 'color 0.3s',
-                    '&:hover': { color: 'primary.main' },
-                  }}
-                >
-                  {item.label}
-                </Typography>
+                    key={item.label}
+                    sx={{
+                      color: 'text.secondary',
+                      textDecoration: 'none',
+                      fontFamily: '"Amiri", serif',
+                      transition: 'color 0.3s',
+                      '&:hover': { color: 'primary.main' },
+                    }}
+                  >
+                    {item.label}
+                  </Typography>
                 </Link>
               ))}
             </Stack>
           </Grid>
 
           {/* Categories */}
-          <Grid size = {{xs: 6, md: 2}}>
+          <Grid size={{ xs: 6, md: 2 }}>
             <Typography
               variant="h6"
               sx={{
@@ -151,33 +136,33 @@ const Footer = () => {
             </Typography>
             <Stack spacing={1.5}>
               {[
-                { label: 'عطور رجالية', href: '/category/men' },
-                { label: 'عطور نسائية', href: '/category/women' },
-                { label: 'عطور شتوية', href: '/category/winter' },
-                { label: 'عطور صيفية', href: '/category/summer' },
+                { label: 'عطور رجالية', href: '/category/1' },
+                { label: 'عطور نسائية', href: '/category/2' },
+                { label: 'عطور شتوية', href: '/category/3' },
+                { label: 'عطور صيفية', href: '/category/4' },
               ].map((item) => (
                 <React.Fragment key={item.label}>
-                <Link href={item.href} style={{textDecoration: 'none'}}>
-                <Typography
-                  key={item.label}
-                  sx={{
-                    color: 'text.secondary',
-                    textDecoration: 'none',
-                    fontFamily: '"Amiri", serif',
-                    transition: 'color 0.3s',
-                    '&:hover': { color: 'primary.main' },
-                  }}
-                >
-                  {item.label}
-                </Typography>
-                </Link>
+                  <Link href={item.href} style={{ textDecoration: 'none' }}>
+                    <Typography
+                      key={item.label}
+                      sx={{
+                        color: 'text.secondary',
+                        textDecoration: 'none',
+                        fontFamily: '"Amiri", serif',
+                        transition: 'color 0.3s',
+                        '&:hover': { color: 'primary.main' },
+                      }}
+                    >
+                      {item.label}
+                    </Typography>
+                  </Link>
                 </React.Fragment>
               ))}
             </Stack>
           </Grid>
 
           {/* Contact */}
-          <Grid size = {{xs: 6, md: 2}}>
+          <Grid size={{ xs: 6, md: 2 }}>
             <Typography
               variant="h6"
               sx={{
@@ -196,19 +181,13 @@ const Footer = () => {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                 <LocationIcon sx={{ color: 'primary.main', fontSize: 20 }} />
                 <Typography sx={{ color: 'text.secondary', fontFamily: '"Amiri", serif' }}>
-                  الرياض، المملكة العربية السعودية
+                  مصر- كفر الشيخ
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                 <PhoneIcon sx={{ color: 'primary.main', fontSize: 20 }} />
                 <Typography sx={{ color: 'text.secondary', direction: 'ltr' }}>
-                  +966 50 123 4567
-                </Typography>
-              </Box>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <EmailIcon sx={{ color: 'primary.main', fontSize: 20 }} />
-                <Typography sx={{ color: 'text.secondary' }}>
-                  info@sukoon.sa
+                  +20 10 60055166
                 </Typography>
               </Box>
             </Stack>
@@ -234,7 +213,7 @@ const Footer = () => {
               fontSize: '0.9rem',
             }}
           >
-           جميع الحقوق محفوظة سكون © 2026
+            جميع الحقوق محفوظة سكون © 2026
           </Typography>
         </Box>
       </Container>

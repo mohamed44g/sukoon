@@ -1,31 +1,53 @@
 "use client"
-import { Box, Container, Typography, Grid, Button, Stack, Snackbar, Alert } from '@mui/material';
+import { Box, Container, Typography, Grid, Button, Stack, Snackbar, Alert, CircularProgress } from '@mui/material';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'; // تأكد من الاستيراد
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ProductCard from '@/components/ProductCard';
 import type { Product, ProductVariant } from '@/types';
 import { useCart } from '@/contexts/CartContext';
+import { productsApi } from '@/services/api';
 
 const MotionBox = motion.create(Box);
 
-
-const OffersPageClient = ({products} : {products : Product[]}) => {
-
+const OffersPageClient = ({ initialProducts }: { initialProducts: Product[] }) => {
   const { addToCart } = useCart();
+  const [products, setProducts] = useState<Product[]>(initialProducts);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(initialProducts.length === 8);
   const [snackbar, setSnackbar] = useState<{ open: boolean; message: string }>({ open: false, message: '' });
-
 
   const handleAddToCart = (product: Product, variant: ProductVariant, quantity: number) => {
     addToCart(product, variant, quantity);
     setSnackbar({ open: true, message: `تمت إضافة ${product.name} (${variant.size}) × ${quantity} للسلة` });
   };
 
+  const loadMore = async () => {
+    setLoading(true);
+    try {
+      const nextPage = page + 1;
+      const newProducts = await productsApi.getOffers(nextPage);
+      if (newProducts.length > 0) {
+        setProducts(prev => [...prev, ...newProducts]);
+        setPage(nextPage);
+        if (newProducts.length < 8) setHasMore(false);
+      } else {
+        setHasMore(false);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
       <Navbar />
-      {/* Quote Section */}
+      {/* ... (Quote Section كما هو) ... */}
       <Box component="section" sx={{ py: { xs: 8, md: 12 }, px: 2, bgcolor: 'background.paper', borderBottom: '1px solid', borderColor: 'divider', position: 'relative', overflow: 'hidden' }}>
         <Box className="pattern-ornament" sx={{ position: 'absolute', inset: 0, opacity: 0.05 }} />
         <Container maxWidth="md" sx={{ position: 'relative', zIndex: 10, textAlign: 'center' }}>
@@ -41,27 +63,24 @@ const OffersPageClient = ({products} : {products : Product[]}) => {
         </Container>
       </Box>
 
-      {/* Products Section */}
       <Container maxWidth="xl" sx={{ py: 8, position: 'relative' }}>
         <Stack alignItems="center" spacing={2} sx={{ mb: 8 }}>
           <Box sx={{ position: 'relative' }}>
             <Typography variant="h2" sx={{ fontFamily: '"Amiri", serif', fontWeight: 700, textAlign: 'center', pb: 3 }}>
-             كل العروض
+              كل العروض
             </Typography>
+            {/* Decoration Lines */}
             <Stack direction="row" alignItems="center" spacing={0.5} sx={{ position: 'absolute', bottom: 0, left: '50%', transform: 'translateX(-50%)' }}>
               <Box sx={{ width: 8, height: 8, bgcolor: 'primary.main', transform: 'rotate(45deg)' }} />
               <Box sx={{ width: 250, height: 2, bgcolor: 'primary.main' }} />
               <Box sx={{ width: 8, height: 8, bgcolor: 'primary.main', transform: 'rotate(45deg)' }} />
             </Stack>
           </Box>
-          <Typography sx={{ color: 'text.secondary', fontFamily: '"Amiri", serif', fontSize: '1.1rem', fontStyle: 'italic', textAlign: 'center', maxWidth: 600, mt: 2 }}>
-           {"عطور صنعت من أندر المكونات لتناسب ذائقتك الرفيعة"}
-          </Typography>
         </Stack>
 
         <Grid container spacing={4}>
           {products.map((product, index) => (
-            <Grid size = {{xs:12, sm: 6, lg: 3}} key={product.id}>
+            <Grid size={{ xs: 12, sm: 6, lg: 3 }} key={product.id}>
               <MotionBox initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }}>
                 <ProductCard product={product} onAddToCart={handleAddToCart} />
               </MotionBox>
@@ -70,24 +89,25 @@ const OffersPageClient = ({products} : {products : Product[]}) => {
         </Grid>
 
         <Stack alignItems="center" sx={{ mt: 8 }}>
-          {
-            products.length == 0 &&
-             <Typography sx={{fontWeight: 700}}>لا يوجد منتجات لعرضها.</Typography>
-          }
+          {products.length === 0 && <Typography sx={{ fontWeight: 700 }}>لا يوجد منتجات لعرضها.</Typography>}
+
+          {hasMore && (
+            <Button
+              variant="outlined"
+              size="large"
+              onClick={loadMore}
+              disabled={loading}
+              startIcon={loading ? <CircularProgress size={20} /> : <ExpandMoreIcon />}
+              sx={{ px: 5, py: 1.5, borderRadius: 50, fontSize: '1.1rem', fontFamily: '"Amiri", serif' }}
+            >
+              {loading ? 'جاري التحميل...' : 'عرض المزيد'}
+            </Button>
+          )}
         </Stack>
       </Container>
-
       <Footer />
-
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={3000}
-        onClose={() => setSnackbar({ ...snackbar, open: false })}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      >
-        <Alert severity="success" sx={{ bgcolor: 'primary.main', color: 'white' }}>
-          {snackbar.message}
-        </Alert>
+      <Snackbar open={snackbar.open} autoHideDuration={3000} onClose={() => setSnackbar({ ...snackbar, open: false })} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+        <Alert severity="success" sx={{ bgcolor: 'primary.main', color: 'white' }}>{snackbar.message}</Alert>
       </Snackbar>
     </Box>
   );

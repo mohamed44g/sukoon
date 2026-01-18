@@ -1,29 +1,16 @@
 import { productsApi } from "@/services/api";
-import OffersPageClient  from "./pageClient"; // افترضت إن عندك Client Component للعرض زي ما عملنا في الصفحة الرئيسية
-
-// 1. تعريف نوع الـ Props
-interface ProductPageProps {
-  params: {
-    productId: string; // الرابط بيرجع سترينج دائماً
-  };
-}
+import OffersPageClient from "./pageClient";
 
 const OffersPage = async () => {
-   // 4. جلب البيانات
-  // يفضل استخدام try-catch هنا عشان لو الـ ID غلط ميعملش Crash
-  let products = null;
+  let initialProducts : any= [];
   try {
-     products = await productsApi.getOffers();
+    // جلب أول 8 عروض
+    initialProducts = await productsApi.getOffers(1);
   } catch (error) {
-     console.error("Product not found");
+    console.error("Offers fetch error");
   }
 
-  if (!products) {
-    return <div>المنتج غير موجود</div>;
-  }
-
-  // 5. تمرير البيانات للـ Client Component
-  return <OffersPageClient products={products}/>;
+  return <OffersPageClient initialProducts={initialProducts || []} />;
 };
 
 export default OffersPage;

@@ -116,9 +116,9 @@ const PageClient = ({products, categories, offers} : {products : Product[], cate
             </Stack>
           </FadeInUp>
 
-          <Grid container spacing={4} mt={7} justifyContent={'center'}>
+          <Grid container spacing={{xs: 1, sm: 4}} mt={7} justifyContent={'center'}>
             {products.map((product, index) => (
-              <Grid size={{xs: 9, sm: 6, md: 3}} key={product.id}>
+              <Grid size={{xs: 6, sm: 6, md: 3}} key={product.id}>
                 <FadeInUp delay={0.1 + (index * 0.05)}>
                   <ProductCard product={product} onAddToCart={handleAddToCart} />
                 </FadeInUp>

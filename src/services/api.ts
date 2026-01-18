@@ -22,7 +22,7 @@ const apiClient: AxiosInstance = axios.create({
     'Content-Type': 'application/json',
   },
   // هام: هذا الخيار يسمح بإرسال الكوكيز مع الطلب لو الباك اند والفرونت اند على نفس الدومين
-  withCredentials: true, 
+  withCredentials: true,
 });
 
 // Cookie Name
@@ -32,10 +32,10 @@ const AUTH_COOKIE_NAME = 'auth_token';
 export const setAuthToken = (token: string | null): void => {
   if (token) {
     // تخزين التوكن في الكوكيز لمدة 7 أيام
-    Cookies.set(AUTH_COOKIE_NAME, token, { 
-      expires: 7, 
+    Cookies.set(AUTH_COOKIE_NAME, token, {
+      expires: 7,
       secure: process.env.NODE_ENV === 'production', // تفعيل الـ Secure في الإنتاج
-      sameSite: 'strict' 
+      sameSite: 'strict'
     });
   } else {
     Cookies.remove(AUTH_COOKIE_NAME);
@@ -74,26 +74,26 @@ apiClient.interceptors.response.use(
       if (status === 401) {
         // ممكن تمسح التوكن هنا لو مخزنه
         // localStorage.removeItem('token'); 
-        
+
         // توجيه لصفحة الخطأ مع كود 401
         // window.location.href = '/error?code=401'; 
-        
+
         // أو لو عاوز توديه للوجين علطول:
         // window.location.href = '/login';
-        
+
         // بس عشان طلبك (صفحة خطأ عامة بتبعت غير مصرح):
-        window.location.href = '/error?code=401'; 
+        window.location.href = '/error?code=401';
       }
-      
+
       // لو 403 (ممنوع الصلاحية)
       if (status === 403) {
-         window.location.href = '/error?code=403';
+        window.location.href = '/error?code=403';
       }
-      
+
       // لو 500 (خطأ سيرفر)
       if (status >= 500) {
-         // اختياري: مش لازم تحول الصفحة ممكن تظهر Alert بس
-         // window.location.href = '/error?code=500';
+        // اختياري: مش لازم تحول الصفحة ممكن تظهر Alert بس
+        // window.location.href = '/error?code=500';
       }
     }
     return Promise.reject(error);
@@ -127,11 +127,12 @@ export const authApi = {
 // قمت بإضافة config?: AxiosRequestConfig لكل الدوال
 // هذا يسمح لك بتمرير الـ Headers من الـ Server Components
 export const productsApi = {
-  getAll: async (config?: AxiosRequestConfig): Promise<Product[]> => {
+  getAll: async (page: number = 1, config?: AxiosRequestConfig): Promise<Product[]> => {
     return request<Product[]>({
       method: 'GET',
       url: '/products',
-      ...config, // دمج الإعدادات الإضافية
+      params: { page }, // إرسال رقم الصفحة
+      ...config,
     });
   },
 
@@ -161,14 +162,15 @@ export const productsApi = {
     });
   },
 
-  getOffers: async (config?: AxiosRequestConfig): Promise<Product[]> => {
+  // ✅ تعديل: استقبال page
+  getOffers: async (page: number = 1, config?: AxiosRequestConfig): Promise<Product[]> => {
     return request<Product[]>({
       method: 'GET',
       url: '/products/offers',
+      params: { page },
       ...config,
     });
   },
-
   getLatestOffers: async (config?: AxiosRequestConfig): Promise<Product[]> => {
     return request<Product[]>({
       method: 'GET',
@@ -205,10 +207,12 @@ export const productsApi = {
     });
   },
 
-  getProductsByCategory: async (id: number, config?: AxiosRequestConfig): Promise<void> => {
-    return request<void>({
+  // ✅ تعديل: استقبال page وتصحيح الـ Return Type
+  getProductsByCategory: async (id: number, page: number = 1, config?: AxiosRequestConfig): Promise<Product[]> => {
+    return request<Product[]>({
       method: 'GET',
       url: `/products/category/${id}`,
+      params: { page },
       ...config,
     });
   },
@@ -262,7 +266,7 @@ export const ordersApi = {
     });
   },
 
-getAll: async (month?: string, config?: AxiosRequestConfig): Promise<Order[]> => {
+  getAll: async (month?: string, config?: AxiosRequestConfig): Promise<Order[]> => {
     return request<Order[]>({
       method: 'GET',
       url: '/orders',
@@ -316,10 +320,10 @@ export const adminsApi = {
     return request({
       method: 'GET',
       url: '/admins',
-      ...config, 
+      ...config,
     });
   },
-  
+
   create: async (data: any) => {
     return request({
       method: 'POST',

@@ -43,17 +43,17 @@ const CartPage = () => {
       <Navbar />
       <Container maxWidth="xl" sx={{ py: 6 }}>
         {/* Header */}
-        <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 6 }}>
+        <Stack direction="row" alignItems="center" gap={2} sx={{ mb: 6 }}>
           <ShoppingCartIcon sx={{ fontSize: 40, color: 'primary.main' }} />
           <Box>
-            <Typography variant="h4" sx={{ fontFamily: '"Amiri", serif', fontWeight: 700 }}>سلة التسوق الملكية</Typography>
+            <Typography variant="h4" sx={{ fontFamily: '"Amiri", serif', fontWeight: 700 }}>سلة التسوق</Typography>
             <Typography sx={{ color: 'text.secondary', fontFamily: '"Amiri", serif' }}>{totalItems} منتجات</Typography>
           </Box>
         </Stack>
 
         <Grid container spacing={4}>
           {/* Cart Items */}
-          <Grid size = {{xs: 12, lg: 8}} >
+          <Grid size={{ xs: 12, lg: 8 }} >
             <Stack spacing={2}>
               {items.map((item, index) => {
                 const price = getDisplayPrice(item.selectedVariant);
@@ -102,7 +102,7 @@ const CartPage = () => {
           </Grid>
 
           {/* Order Summary */}
-          <Grid size = {{xs: 12, lg: 4}}>
+          <Grid size={{ xs: 12, lg: 4 }}>
             <Box sx={{ p: 3, bgcolor: 'background.paper', border: '1px solid', borderColor: 'divider', borderRadius: 3, position: 'sticky', top: 96 }}>
               <Typography variant="h6" sx={{ fontFamily: '"Amiri", serif', fontWeight: 700, mb: 3, pb: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
                 ملخص الطلب
@@ -130,12 +130,12 @@ const CartPage = () => {
                 variant="contained"
                 fullWidth
                 size="large"
-                startIcon={<ShoppingCartCheckoutIcon />}
+                startIcon={<ShoppingCartCheckoutIcon sx={{ ml: 1 }} />}
                 sx={{ mt: 3, height: 56, fontSize: '1.25rem', fontFamily: '"Amiri", serif', boxShadow: '0 4px 20px rgba(212, 165, 116, 0.2)' }}
               >
                 إتمام الطلب
               </Button>
-              
+
 
               <Button
                 component={Link}
@@ -143,7 +143,7 @@ const CartPage = () => {
                 variant="outlined"
                 fullWidth
                 size="large"
-                startIcon={<ArrowBackIcon />}
+                startIcon={<ArrowBackIcon sx={{ ml: 1 }} />}
                 sx={{ mt: 2, height: 48, fontFamily: '"Amiri", serif' }}
               >
                 متابعة التسوق

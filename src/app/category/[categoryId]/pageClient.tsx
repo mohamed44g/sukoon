@@ -12,9 +12,8 @@ import { productsApi } from '@/services/api';
 
 const MotionBox = motion.create(Box);
 
-// ... (Category Config كما هو) ...
 const womenQuote = ` العطر زينة، ولكل زينة موضعها... `;
-const categoryConfig: Record<string, any> = { /* ... نفس الإعدادات السابقة ... */
+const categoryConfig: Record<string, any> = {
   1: {
     title: 'عطور رجالية', subtitle: 'عطور النخبة', heroTitle: 'الفخامة الرجالية', heroSubtitle: 'روح الشرق الأصيل',
     quote: ' قال رسول الله ﷺ: حُبِّبَ إليَّ من دنياكم الطيبُ فـإستحضر أخي النيه تؤجر ان شاء الله ', quoteSource: 'حديث شريف',

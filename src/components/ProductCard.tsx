@@ -146,7 +146,7 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
             sx={{
               fontFamily: '"Amiri", serif',
               fontWeight: 700,
-              fontSize: { xs: '1.25rem', lg: '1.5rem' },
+              fontSize: { xs: '1.2rem', lg: '1.5rem' },
               color: 'text.primary',
               textAlign: 'center',
               lineHeight: 1.3,

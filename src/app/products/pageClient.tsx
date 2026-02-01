@@ -79,9 +79,9 @@ const ProductsPageClient = ({ initialProducts }: { initialProducts: Product[] })
           </Box>
         </Stack>
 
-        <Grid container spacing={4} justifyContent={'center'} alignItems={'center'}>
+        <Grid container spacing={2} justifyContent={'center'} alignItems={'center'}>
           {products.map((product) => (
-            <Grid size={{ xs: 10, sm: 6, lg: 3 }} key={product.id}>
+            <Grid size={{ xs: 6, sm: 6, md: 3 }} key={product.id}>
               <FadeInUp>
                 <ProductCard product={product} onAddToCart={handleAddToCart} />
               </FadeInUp>

@@ -93,7 +93,7 @@ const CategoryCard = ({ category}: CategoryCardProps) => {
               fontWeight: 700,
               color: 'text.primary',
               mb: 1,
-              fontSize : {xs: '1.7rem', sm: '2rem'}
+              fontSize : {xs: '1.2rem', sm: '2rem'}
             }}
           >
             {category.name}

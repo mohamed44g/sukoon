@@ -78,9 +78,9 @@ const OffersPageClient = ({ initialProducts }: { initialProducts: Product[] }) =
           </Box>
         </Stack>
 
-        <Grid container spacing={4}>
+        <Grid container spacing={2}>
           {products.map((product, index) => (
-            <Grid size={{ xs: 12, sm: 6, lg: 3 }} key={product.id}>
+            <Grid size={{ xs: 6, sm: 6, md: 3 }} key={product.id}>
               <MotionBox initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }}>
                 <ProductCard product={product} onAddToCart={handleAddToCart} />
               </MotionBox>

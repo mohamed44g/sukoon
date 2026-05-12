@@ -13,7 +13,7 @@ export interface Product {
   images: string[];
   variants: ProductVariant[];
   categoryIds?: number[];
-  relatedProducts? : Product[]
+  relatedProducts?: Product[]
 }
 
 // Category
@@ -120,6 +120,7 @@ export interface CartItem {
   product: Product;
   selectedVariant: ProductVariant;
   quantity: number;
+  type: string;
 }
 
 // Helper function to calculate discount percentage

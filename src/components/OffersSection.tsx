@@ -19,7 +19,7 @@ import FadeInUp from './FadeInUp';
 // --- مكون داخلي يمثل الشريحة الواحدة (عشان نفصل الـ State لكل منتج) ---
 const OfferSlide = ({ product }: { product: Product }) => {
   const { addToCart } = useCart();
-  
+
   // State خاص بكل كارت منفصل
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null);
 
@@ -32,8 +32,8 @@ const OfferSlide = ({ product }: { product: Product }) => {
   const discountPrice = activeVariant?.discount_price || 0;
   const isOutOfStock = null; // يمكن استبداله بمنطق الكمية الفعلي
 
-  const discountPercent = hasDiscount 
-    ? Math.round(((price - discountPrice) / price) * 100) 
+  const discountPercent = hasDiscount
+    ? Math.round(((price - discountPrice) / price) * 100)
     : 0;
 
   return (
@@ -57,7 +57,7 @@ const OfferSlide = ({ product }: { product: Product }) => {
       <Grid container sx={{ height: '100%' }}>
         {/* Product Image */}
         <Grid size={{ xs: 12, lg: 6 }} sx={{ position: 'relative', height: { xs: 250, lg: 'auto' }, minHeight: { lg: 500 } }}>
-          <Image 
+          <Image
             src={`${API_URL}${product.images[0] || '/placeholder.svg'}`}
             alt={product.name}
             fill
@@ -65,7 +65,7 @@ const OfferSlide = ({ product }: { product: Product }) => {
             style={{ objectFit: 'cover' }}
             priority={true} // تحميل سريع للصورة
           />
-          
+
           <Box
             sx={{
               position: 'absolute',
@@ -109,15 +109,15 @@ const OfferSlide = ({ product }: { product: Product }) => {
               height: '100%',
             }}
           >
-             {/* Pattern Overlay */}
-             <Box
-                sx={{
+            {/* Pattern Overlay */}
+            <Box
+              sx={{
                 position: 'absolute',
                 inset: 0,
                 backgroundImage: `url("https://www.transparenttextures.com/patterns/arabesque.png")`,
                 opacity: 0.05,
                 pointerEvents: 'none',
-                }}
+              }}
             />
 
             <Box sx={{ zIndex: 10 }}>
@@ -130,7 +130,7 @@ const OfferSlide = ({ product }: { product: Product }) => {
               sx={{
                 color: 'text.secondary',
                 lineHeight: 1.8,
-                fontSize: {xs: '0.9rem',sm:'1.1rem'},
+                fontSize: { xs: '0.9rem', sm: '1.1rem' },
                 fontWeight: 300,
                 fontFamily: '"Amiri", serif',
                 borderRight: '2px solid',
@@ -190,7 +190,7 @@ const OfferSlide = ({ product }: { product: Product }) => {
 
               <Box sx={{ flex: 1, minWidth: 200 }}>
                 <Button
-                  onClick={() => addToCart(product, activeVariant, 1)}
+                  onClick={() => addToCart(product, activeVariant, 1, "offer")}
                   disabled={isOutOfStock || false}
                   variant="contained"
                   fullWidth
@@ -279,9 +279,9 @@ const OffersSection = ({ offers }: { offers: Product[] }) => {
           {/* Embla Container (الحاوية اللي فيها كل الشرائح) */}
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             {offers.map((offer) => (
-              <Box 
-                key={offer.id} 
-                sx={{ 
+              <Box
+                key={offer.id}
+                sx={{
                   flex: '0 0 80%', // كل شريحة تاخد العرض كامل
                   minWidth: 0,
                   py: 4 // مسافة فوق وتحت عشان الظل ميتقطعش
@@ -294,7 +294,7 @@ const OffersSection = ({ offers }: { offers: Product[] }) => {
         </Box>
 
         {/* أزرار التنقل (اختياري - لو حابب تضيفهم) */}
-        <IconButton 
+        <IconButton
           onClick={scrollPrev}
           sx={{
             position: 'absolute',
@@ -311,7 +311,7 @@ const OffersSection = ({ offers }: { offers: Product[] }) => {
           <NavigateNextIcon /> {/* لأن الاتجاه RTL، الأيقونات قد تحتاج عكس حسب ذوقك */}
         </IconButton>
 
-        <IconButton 
+        <IconButton
           onClick={scrollNext}
           sx={{
             position: 'absolute',

@@ -79,6 +79,7 @@ const CheckoutPage = () => {
           productId: item.product.id,
           size: item.selectedVariant.size,
           quantity: item.quantity,
+          type: item.type,
         })),
       };
 
@@ -268,7 +269,7 @@ const CheckoutPage = () => {
                   <span>{finalTotal} <Box component="span" sx={{ color: 'primary.main', fontSize: '0.85rem', fontFamily: '"Amiri", serif' }}>ج</Box></span>
                 </Stack>
 
-                <Button variant="contained" fullWidth size="large" disabled={isSubmitting} onClick={handleSubmit} sx={{ml: 1, display: { xs: 'none', lg: 'flex' }, mt: 3, height: 56, fontSize: '1.25rem', fontFamily: '"Amiri", serif', boxShadow: '0 4px 20px rgba(207, 115, 23, 0.3)' }}>
+                <Button variant="contained" fullWidth size="large" disabled={isSubmitting} onClick={handleSubmit} sx={{ ml: 1, display: { xs: 'none', lg: 'flex' }, mt: 3, height: 56, fontSize: '1.25rem', fontFamily: '"Amiri", serif', boxShadow: '0 4px 20px rgba(207, 115, 23, 0.3)' }}>
                   {isSubmitting ? 'جاري الإرسال...' : 'تأكيد الطلب'}
                 </Button>
 

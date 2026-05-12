@@ -17,7 +17,7 @@ import Image from 'next/image';
 
 interface ProductCardProps {
   product: Product;
-  onAddToCart?: (product: Product, variant: ProductVariant, quantity: number) => void;
+  onAddToCart?: (product: Product, variant: ProductVariant, quantity: number, type: string) => void;
 }
 
 
@@ -34,7 +34,7 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
 
   const handleAddToCart = () => {
     if (onAddToCart && selectedVariant && !isOutOfStock) {
-      onAddToCart(product, selectedVariant, 1);
+      onAddToCart(product, selectedVariant, 1, 'product');
     }
   };
 
@@ -57,7 +57,7 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
       }}
     >
       {/* Image Container */}
-      <Link prefetch = {false} href={`/products/${product.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+      <Link prefetch={false} href={`/products/${product.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
         <Box sx={{ position: 'relative', p: 2 }}>
           <Box
             sx={{
@@ -109,39 +109,39 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
               alt={product.name}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              style={{ 
+              style={{
                 objectFit: 'cover',
                 transition: 'transform 0.7s',
               }}
               className="hover:scale-110" // أو يمكنك استخدام sx في الـ Box الأب للتحكم في الـ hover
             />
             {/* Hover effect hack via styles since Next/Image handles styles differently */}
-            <Box 
-                sx={{ 
-                    position: 'absolute', 
-                    inset: 0, 
-                    transition: 'background 0.3s',
-                    '&:hover': { backgroundColor: 'rgba(0,0,0,0.02)' } // Optional slight overlay
-                }} 
+            <Box
+              sx={{
+                position: 'absolute',
+                inset: 0,
+                transition: 'background 0.3s',
+                '&:hover': { backgroundColor: 'rgba(0,0,0,0.02)' } // Optional slight overlay
+              }}
             />
           </Box>
         </Box>
       </Link>
 
       {/* Content */}
-      <CardContent 
-        sx={{ 
-          flexGrow: 1, 
-          display: 'flex', 
-          flexDirection: 'column', 
-          gap: 1.5, 
+      <CardContent
+        sx={{
+          flexGrow: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 1.5,
           p: 2.5,
           justifyContent: 'space-between'
         }}
       >
         <Box>
-           {/* Product Name */}
-           <Typography
+          {/* Product Name */}
+          <Typography
             variant="h6"
             sx={{
               fontFamily: '"Amiri", serif',
@@ -219,7 +219,7 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
         {/* Price and Add to Cart */}
         <Box
           sx={{
-            mt: 'auto', 
+            mt: 'auto',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',

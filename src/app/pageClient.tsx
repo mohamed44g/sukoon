@@ -12,17 +12,17 @@ import QuoteBanner from '@/components/QuoteBanner';
 import type { Product, Category, ProductVariant } from '@/types';
 import { useCart } from '@/contexts/CartContext';
 
-const PageClient = ({products, categories, offers} : {products : Product[], categories: Category[], offers : Product[]}) => {
+const PageClient = ({ products, categories, offers }: { products: Product[], categories: Category[], offers: Product[] }) => {
   const { addToCart } = useCart();
 
-  const handleAddToCart = (product: Product, variant: ProductVariant, quantity: number) => {
-    addToCart(product, variant, quantity);
+  const handleAddToCart = (product: Product, variant: ProductVariant, quantity: number, type: string) => {
+    addToCart(product, variant, quantity, type);
   };
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
       <Navbar />
-      
+
       {/* Hero Section */}
       <HeroSection />
 
@@ -50,7 +50,7 @@ const PageClient = ({products, categories, offers} : {products : Product[], cate
                 الأقــســام
                 <Box component="span" sx={{ color: 'primary.main', fontSize: '1.5rem', verticalAlign: 'middle', px: 2, mt: '-10px', display: 'inline-block' }}>❖</Box>
               </Typography>
-              
+
               <Typography
                 sx={{
                   color: 'rgba(200, 173, 147, 0.8)',
@@ -69,9 +69,9 @@ const PageClient = ({products, categories, offers} : {products : Product[], cate
 
           <Grid container spacing={3} mt={7}>
             {categories.map((category, index) => (
-              <Grid size={{xs: 6, sm: 6, md: 3}} key={category.id}>
+              <Grid size={{ xs: 6, sm: 6, md: 3 }} key={category.id}>
                 <FadeInUp delay={index * 0.1}>
-                  <CategoryCard category={category}/>
+                  <CategoryCard category={category} />
                 </FadeInUp>
               </Grid>
             ))}
@@ -79,7 +79,7 @@ const PageClient = ({products, categories, offers} : {products : Product[], cate
         </Box>
 
         {/* Offers Section */}
-        <OffersSection offers={offers}/>
+        <OffersSection offers={offers} />
 
         {/* Products Section */}
         <Box component="section" sx={{ mt: 20, position: 'relative', zIndex: 10 }}>
@@ -116,9 +116,9 @@ const PageClient = ({products, categories, offers} : {products : Product[], cate
             </Stack>
           </FadeInUp>
 
-          <Grid container spacing={{xs: 1, sm: 4}} mt={7} justifyContent={'center'}>
+          <Grid container spacing={{ xs: 1, sm: 4 }} mt={7} justifyContent={'center'}>
             {products.map((product, index) => (
-              <Grid size={{xs: 6, sm: 6, md: 3}} key={product.id}>
+              <Grid size={{ xs: 6, sm: 6, md: 3 }} key={product.id}>
                 <FadeInUp delay={0.1 + (index * 0.05)}>
                   <ProductCard product={product} onAddToCart={handleAddToCart} />
                 </FadeInUp>
@@ -132,7 +132,7 @@ const PageClient = ({products, categories, offers} : {products : Product[], cate
       <QuoteBanner />
 
       {/* Testimonials Section */}
-      <Container maxWidth="xl" sx={{mt: 20}}>
+      <Container maxWidth="xl" sx={{ mt: 20 }}>
         <TestimonialsSection />
       </Container>
 

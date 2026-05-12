@@ -46,8 +46,8 @@ const CategoryPageClient = ({ initialProducts, categoryId }: { initialProducts: 
 
   const config = categoryConfig[categoryId] || categoryConfig[1]; // Fallback
 
-  const handleAddToCart = (product: Product, variant: ProductVariant, quantity: number) => {
-    addToCart(product, variant, quantity);
+  const handleAddToCart = (product: Product, variant: ProductVariant, quantity: number, type: string) => {
+    addToCart(product, variant, quantity, type);
     setSnackbar({ open: true, message: `تمت إضافة ${product.name} (${variant.size}) × ${quantity} للسلة` });
   };
 

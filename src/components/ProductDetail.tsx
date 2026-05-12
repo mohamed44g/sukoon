@@ -25,8 +25,8 @@ import { API_URL } from '@/lib/api';
 
 interface ProductDetailProps {
   product: Product;
-  onAddToCart?: (variant: ProductVariant, quantity: number) => void;
-  onBuyNow?: (variant: ProductVariant, quantity: number) => void; // 👈 1. إضافة الخاصية
+  onAddToCart?: (variant: ProductVariant, quantity: number, type: string) => void;
+  onBuyNow?: (variant: ProductVariant, quantity: number, type: string) => void; // 👈 1. إضافة الخاصية
 }
 
 const MotionBox = motion(Box);
@@ -44,24 +44,24 @@ const ProductDetail = ({ product, onAddToCart, onBuyNow }: ProductDetailProps) =
 
   const handleAddToCart = () => {
     if (onAddToCart && selectedVariant) {
-      onAddToCart(selectedVariant, quantity);
+      onAddToCart(selectedVariant, quantity, "product");
     }
   };
 
   // 👇 2. دالة الشراء المباشر
   const handleBuyNow = () => {
     if (onBuyNow && selectedVariant) {
-      onBuyNow(selectedVariant, quantity);
+      onBuyNow(selectedVariant, quantity, "product");
     }
   };
 
   return (
-    <Container maxWidth="xl" sx={{ py: 5, px: {xs: 4, sm: 0} }}>
-       {/* ... (نفس الكود السابق للصور والعناوين) ... */}
-       <Grid container spacing={{ xs: 4, lg: 8 }}>
-        <Grid size = {{xs: 12, lg: 6}}>
-           {/* ... كود الصور ... */}
-             <Stack spacing={3}>
+    <Container maxWidth="xl" sx={{ py: 5, px: { xs: 4, sm: 0 } }}>
+      {/* ... (نفس الكود السابق للصور والعناوين) ... */}
+      <Grid container spacing={{ xs: 4, lg: 8 }}>
+        <Grid size={{ xs: 12, lg: 6 }}>
+          {/* ... كود الصور ... */}
+          <Stack spacing={3}>
             {/* Main Image */}
             <MotionBox
               initial={{ opacity: 0, scale: 0.98 }}
@@ -125,11 +125,11 @@ const ProductDetail = ({ product, onAddToCart, onBuyNow }: ProductDetailProps) =
         </Grid>
 
         {/* Product Info */}
-        <Grid size = {{xs: 12, lg: 6}}>
-           <Stack spacing={3} sx={{ pt: 2 }}>
+        <Grid size={{ xs: 12, lg: 6 }}>
+          <Stack spacing={3} sx={{ pt: 2 }}>
             {/* ... (Badge, Title, Price, Description, Size Selector) ... */}
-            
-             {/* Badge */}
+
+            {/* Badge */}
             <MotionBox
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -146,7 +146,7 @@ const ProductDetail = ({ product, onAddToCart, onBuyNow }: ProductDetailProps) =
                   fontFamily: '"Amiri", serif',
                 }}
               >
-                 فخامة لا تضاهى 
+                فخامة لا تضاهى
               </Typography>
               <Box sx={{ height: "1px", width: 40, bgcolor: 'primary.main' }} />
             </MotionBox>
@@ -251,7 +251,7 @@ const ProductDetail = ({ product, onAddToCart, onBuyNow }: ProductDetailProps) =
                     textUnderlineOffset: 4,
                   }}
                 >
-                  اختر الحجم المناسب 
+                  اختر الحجم المناسب
                 </Typography>
               </Box>
               <Stack direction="row" gap={2}>
@@ -347,14 +347,14 @@ const ProductDetail = ({ product, onAddToCart, onBuyNow }: ProductDetailProps) =
               </Button>
             </Stack>
 
-             {/* Trust Badges */}
+            {/* Trust Badges */}
             <Grid container spacing={2} sx={{ pt: 3, borderTop: '1px solid', borderColor: 'divider' }}>
               {[
                 { icon: <VerifiedIcon />, label: 'ضمان أصالة 100%' },
                 { icon: <ShippingIcon />, label: 'شحن سريع وآمن' },
                 { icon: <ReturnIcon />, label: 'سياسة استرجاع مرنة' },
               ].map((item) => (
-                <Grid size={{xs: 4}} key={item.label}>
+                <Grid size={{ xs: 4 }} key={item.label}>
                   <Stack alignItems="center" spacing={1}>
                     <Box sx={{ color: 'primary.main' }}>{item.icon}</Box>
                     <Typography sx={{ fontSize: '0.75rem', color: 'text.secondary', textAlign: 'center' }}>

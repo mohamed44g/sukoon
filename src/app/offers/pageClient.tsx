@@ -20,8 +20,8 @@ const OffersPageClient = ({ initialProducts }: { initialProducts: Product[] }) =
   const [hasMore, setHasMore] = useState(initialProducts.length === 8);
   const [snackbar, setSnackbar] = useState<{ open: boolean; message: string }>({ open: false, message: '' });
 
-  const handleAddToCart = (product: Product, variant: ProductVariant, quantity: number) => {
-    addToCart(product, variant, quantity);
+  const handleAddToCart = (product: Product, variant: ProductVariant, quantity: number, type: string) => {
+    addToCart(product, variant, quantity, type);
     setSnackbar({ open: true, message: `تمت إضافة ${product.name} (${variant.size}) × ${quantity} للسلة` });
   };
 

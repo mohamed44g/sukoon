@@ -13,30 +13,30 @@ import { useParams, useRouter } from 'next/navigation'; // 👈 1. استيرا�
 
 
 
-const ProductPageClient = ({product, related} : {product : Product, related : any}) => {
+const ProductPageClient = ({ product, related }: { product: Product, related: any }) => {
   const { id } = useParams();
   const router = useRouter(); // 👈 2. تعريف router
   const { addToCart } = useCart();
   const [snackbar, setSnackbar] = useState<{ open: boolean; message: string }>({ open: false, message: '' });
 
-  const handleAddToCart = (variant: ProductVariant, quantity: number) => {
-    addToCart(product, variant, quantity);
+  const handleAddToCart = (variant: ProductVariant, quantity: number, type: string) => {
+    addToCart(product, variant, quantity, type);
     setSnackbar({ open: true, message: `تمت إضافة ${product.name} (${variant.size}) × ${quantity} للسلة` });
   };
 
   // 👇 3. دالة الشراء المباشر
   const handleBuyNow = (variant: ProductVariant, quantity: number) => {
     // الخيار 1: إضافة المنتج للسلة الحالية ثم الذهاب للدفع
-    addToCart(product, variant, quantity);
+    addToCart(product, variant, quantity, "product");
     // توجيه مباشر لصفحة الدفع
     router.push('/checkout');
-    
+
     // ملاحظة: إذا كنت تريد أن يكون "شراء الآن" يفرغ السلة أولاً ويضع هذا المنتج فقط،
     // يمكنك استخدام clearCart() قبل addToCart()، لكن السلوك الشائع هو الإضافة.
   };
 
-  const handleRelatedAddToCart = (product: Product, variant: ProductVariant, quantity: number) => {
-    addToCart(product, variant, quantity);
+  const handleRelatedAddToCart = (product: Product, variant: ProductVariant, quantity: number, type: string) => {
+    addToCart(product, variant, quantity, type);
     setSnackbar({ open: true, message: `تمت إضافة ${product.name} (${variant.size}) × ${quantity} للسلة` });
   };
 
@@ -80,8 +80,8 @@ const ProductPageClient = ({product, related} : {product : Product, related : an
             <Box sx={{ width: 96, height: 4, bgcolor: 'rgba(207, 115, 23, 0.2)', borderRadius: 2 }} />
           </Stack>
           <Grid container spacing={4} justifyContent={'center'}>
-            {related.map((product : any) => (
-              <Grid size = {{xs: 9, sm: 6, lg: 3}}key={product.id}>
+            {related.map((product: any) => (
+              <Grid size={{ xs: 9, sm: 6, lg: 3 }} key={product.id}>
                 <ProductCard product={product} onAddToCart={handleRelatedAddToCart} />
               </Grid>
             ))}

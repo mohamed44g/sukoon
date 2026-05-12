@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
 const Main = async () => {
   let latestProducts : any = [];
   let categories : any = [];
-  let offers : any = []
+  let offers : any = [];
   
   try {
     latestProducts = await productsApi.getLatest();
@@ -15,7 +15,6 @@ const Main = async () => {
     console.log(categories);
   } catch (error) {
     console.error("Failed to fetch latest products:", error);
-    // ممكن تخليها مصفوفة فاضية عشان الموقع يفتح حتى لو مفيش منتجات
   }
   return <PageClient products={latestProducts} categories = {categories} offers = {offers}/>
 };

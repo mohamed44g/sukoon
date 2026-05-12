@@ -13,8 +13,8 @@ import Image from 'next/image';
 import { Product, ProductVariant } from '@/types';
 import { useCart } from '@/contexts/CartContext';
 import { API_URL } from '@/lib/api';
+import FadeInUp from './FadeInUp';
 
-const MotionBox = motion.create(Box);
 
 // --- مكون داخلي يمثل الشريحة الواحدة (عشان نفصل الـ State لكل منتج) ---
 const OfferSlide = ({ product }: { product: Product }) => {
@@ -56,7 +56,7 @@ const OfferSlide = ({ product }: { product: Product }) => {
 
       <Grid container sx={{ height: '100%' }}>
         {/* Product Image */}
-        <Grid size={{ xs: 12, lg: 6 }} sx={{ position: 'relative', height: { xs: 350, lg: 'auto' }, minHeight: { lg: 500 } }}>
+        <Grid size={{ xs: 12, lg: 6 }} sx={{ position: 'relative', height: { xs: 250, lg: 'auto' }, minHeight: { lg: 500 } }}>
           <Image 
             src={`${API_URL}${product.images[0] || '/placeholder.svg'}`}
             alt={product.name}
@@ -239,11 +239,7 @@ const OffersSection = ({ offers }: { offers: Product[] }) => {
   return (
     <Box component="section" sx={{ py: 0, mt: 20 }}>
       {/* العنوان */}
-      <MotionBox
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
+      <FadeInUp
       >
         <Stack alignItems="center" spacing={2} sx={{ mb: 4 }}>
           <Typography
@@ -275,7 +271,7 @@ const OffersSection = ({ offers }: { offers: Product[] }) => {
             "كأنك تمشي بعد المطر، الأرض ما زالت دافئة، والهواء يحمل سرًّا لا يُقال… هذه ليست رائحة، هذا إحساس وجد طريقه إليك."
           </Typography>
         </Stack>
-      </MotionBox>
+      </FadeInUp>
 
       {/* منطقة الكاروسيل */}
       <Box sx={{ position: 'relative', mt: 7 }}>

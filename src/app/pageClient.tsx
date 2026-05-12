@@ -136,9 +136,6 @@ const PageClient = ({products, categories, offers} : {products : Product[], cate
         <TestimonialsSection />
       </Container>
 
-      {/* Newsletter Section */}
-      {/* <NewsletterSection /> */}
-
       <Footer />
     </Box>
   );

@@ -277,7 +277,7 @@ const OffersSection = ({ offers }: { offers: Product[] }) => {
         {/* Embla Viewport (النافذة اللي بنشوف منها) */}
         <Box sx={{ overflow: 'hidden' }} ref={emblaRef}>
           {/* Embla Container (الحاوية اللي فيها كل الشرائح) */}
-          <Box sx={{ display: 'flex' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             {offers.map((offer) => (
               <Box 
                 key={offer.id} 

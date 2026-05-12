@@ -77,7 +77,6 @@ const OfferSlide = ({ product }: { product: Product }) => {
 
           {hasDiscount && (
             <Chip
-              icon={<LocalFireDepartmentIcon sx={{ fontSize: 14, color: 'white !important' }} />}
               label={`خصم ${discountPercent}%`}
               sx={{
                 position: 'absolute',
@@ -122,7 +121,7 @@ const OfferSlide = ({ product }: { product: Product }) => {
             />
 
             <Box sx={{ zIndex: 10 }}>
-              <Typography variant="h3" sx={{ fontFamily: '"Amiri", serif', fontWeight: 700, fontSize: { xs: '2rem', lg: '2.75rem' }, color: 'white', lineHeight: 1.3, mb: 1 }}>
+              <Typography variant="h3" sx={{ fontFamily: '"Amiri", serif', fontWeight: 700, fontSize: { xs: '1.3rem', lg: '2.75rem' }, color: 'white', lineHeight: 1.3, mb: 1 }}>
                 {product.name}
               </Typography>
             </Box>
@@ -131,7 +130,7 @@ const OfferSlide = ({ product }: { product: Product }) => {
               sx={{
                 color: 'text.secondary',
                 lineHeight: 1.8,
-                fontSize: '1.1rem',
+                fontSize: {xs: '0.9rem',sm:'1.1rem'},
                 fontWeight: 300,
                 fontFamily: '"Amiri", serif',
                 borderRight: '2px solid',
@@ -283,7 +282,7 @@ const OffersSection = ({ offers }: { offers: Product[] }) => {
               <Box 
                 key={offer.id} 
                 sx={{ 
-                  flex: '0 0 100%', // كل شريحة تاخد العرض كامل
+                  flex: '0 0 80%', // كل شريحة تاخد العرض كامل
                   minWidth: 0,
                   py: 4 // مسافة فوق وتحت عشان الظل ميتقطعش
                 }}

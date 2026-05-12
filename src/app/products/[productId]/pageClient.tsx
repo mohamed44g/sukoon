@@ -81,7 +81,7 @@ const ProductPageClient = ({product, related} : {product : Product, related : an
           </Stack>
           <Grid container spacing={4} justifyContent={'center'}>
             {related.map((product : any) => (
-              <Grid size = {{xs: 12, sm: 6, lg: 3}}key={product.id}>
+              <Grid size = {{xs: 9, sm: 6, lg: 3}}key={product.id}>
                 <ProductCard product={product} onAddToCart={handleRelatedAddToCart} />
               </Grid>
             ))}

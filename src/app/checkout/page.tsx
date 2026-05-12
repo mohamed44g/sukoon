@@ -1,5 +1,5 @@
 "use client"
-import { useState, useMemo, useEffect } from 'react'; 
+import { useState, useMemo, useEffect } from 'react';
 import { Box, Container, Typography, Grid, Button, Stack, TextField, MenuItem, CircularProgress, Snackbar, Alert } from '@mui/material';
 import { motion } from 'framer-motion';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
@@ -72,9 +72,9 @@ const CheckoutPage = () => {
     try {
       const orderData = {
         customerName: formData.customerName,
-        customerPhone: formData.phone, 
+        customerPhone: formData.phone,
         customerAddress: `${formData.governorate} - ${formData.addressDetails}`,
-        shippingCost: shippingCost, 
+        shippingCost: formData.governorate,
         items: items.map((item) => ({
           productId: item.product.id,
           size: item.selectedVariant.size,
@@ -83,14 +83,14 @@ const CheckoutPage = () => {
       };
 
       await ordersApi.create(orderData);
-      
+
       clearCart();
       // 👇 2. بدلاً من التوجيه، نعرض رسالة النجاح
       setIsSuccess(true);
       window.scrollTo({ top: 0, behavior: 'smooth' }); // الصعود لأعلى الصفحة
 
     } catch (error) {
-      console.error(error); 
+      console.error(error);
       showSnackbar('حدث خطأ أثناء إرسال الطلب. يرجى المحاولة مرة أخرى', 'error');
     } finally {
       setIsSubmitting(false);
@@ -103,15 +103,15 @@ const CheckoutPage = () => {
       <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
         <Navbar />
         <Container maxWidth="md" sx={{ py: 20, textAlign: 'center' }}>
-          <MotionBox 
-            initial={{ opacity: 0, scale: 0.8 }} 
+          <MotionBox
+            initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
-            sx={{ 
-              bgcolor: 'background.paper', 
-              p: 6, 
-              borderRadius: 4, 
-              border: '1px solid', 
+            sx={{
+              bgcolor: 'background.paper',
+              p: 6,
+              borderRadius: 4,
+              border: '1px solid',
               borderColor: 'primary.main',
               boxShadow: '0 0 40px rgba(207, 115, 23, 0.1)'
             }}
@@ -125,16 +125,16 @@ const CheckoutPage = () => {
               سيتم التواصل معك من خلال الرقم المسجل ({formData.phone}) <br />
               <Box component="span" sx={{ color: 'primary.main', fontWeight: 'bold' }}>في خلال يومين</Box> لتأكيد الطلب والشحن.
             </Typography>
-            
-            <Button 
-              variant="contained" 
-              size="large" 
+
+            <Button
+              variant="contained"
+              size="large"
               onClick={() => router.push('/')}
-              sx={{ 
-                fontFamily: '"Amiri", serif', 
-                px: 6, 
+              sx={{
+                fontFamily: '"Amiri", serif',
+                px: 6,
                 py: 1.5,
-                fontSize: '1.1rem' 
+                fontSize: '1.1rem'
               }}
             >
               العودة للرئيسية
@@ -147,7 +147,7 @@ const CheckoutPage = () => {
   }
 
   if (items.length === 0 && !isSuccess) {
-    return null; 
+    return null;
   }
 
   return (
@@ -156,7 +156,7 @@ const CheckoutPage = () => {
 
       <Container maxWidth="xl" sx={{ py: 6 }}>
         {/* Header */}
-        <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 6 }}>
+        <Stack direction="row" alignItems="center" gap={2} sx={{ mb: 6 }}>
           <ShoppingCartCheckoutIcon sx={{ fontSize: 40, color: 'primary.main' }} />
           <Box>
             <Typography variant="h4" sx={{ fontFamily: '"Amiri", serif', fontWeight: 700 }}>إتمام الطلب</Typography>
@@ -166,7 +166,7 @@ const CheckoutPage = () => {
 
         <Grid container spacing={4}>
           {/* Checkout Form */}
-          <Grid size={{xs: 12, lg: 8}}>
+          <Grid size={{ xs: 12, lg: 8 }}>
             <MotionBox initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
               <Box component="form" onSubmit={handleSubmit} sx={{ p: { xs: 3, md: 4 }, bgcolor: 'background.paper', border: '1px solid', borderColor: 'divider', borderRadius: 3 }}>
                 <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 3, pb: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
@@ -175,10 +175,10 @@ const CheckoutPage = () => {
                 </Stack>
 
                 <Grid container spacing={3}>
-                  <Grid size={{xs: 12}}>
+                  <Grid size={{ xs: 12 }}>
                     <TextField fullWidth label="الاسم الكامل" name="customerName" value={formData.customerName} onChange={handleInputChange} required placeholder="أدخل اسمك الكامل" />
                   </Grid>
-                  <Grid size={{xs: 12}}>
+                  <Grid size={{ xs: 12 }}>
                     <TextField fullWidth label="رقم الهاتف" name="phone" value={formData.phone} onChange={handleInputChange} required placeholder="01xxxxxxxxx" type="tel" />
                   </Grid>
                 </Grid>
@@ -189,7 +189,7 @@ const CheckoutPage = () => {
                 </Stack>
 
                 <Grid container spacing={3}>
-                  <Grid size={{xs: 12}}>
+                  <Grid size={{ xs: 12 }}>
                     <TextField
                       fullWidth
                       select
@@ -214,7 +214,7 @@ const CheckoutPage = () => {
                       </Stack>
                     )}
                   </Grid>
-                  <Grid size={{xs: 12}}>
+                  <Grid size={{ xs: 12 }}>
                     <TextField fullWidth multiline rows={3} label="العنوان بالتفصيل" name="addressDetails" value={formData.addressDetails} onChange={handleInputChange} required placeholder="اكتب العنوان بالتفصيل (المنطقة، الشارع، رقم المبنى، الطابق...)" />
                   </Grid>
                 </Grid>
@@ -227,7 +227,7 @@ const CheckoutPage = () => {
           </Grid>
 
           {/* Order Summary */}
-          <Grid size={{xs: 12, lg: 4}}>
+          <Grid size={{ xs: 12, lg: 4 }}>
             <MotionBox initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
               <Box sx={{ p: 3, bgcolor: 'background.paper', border: '1px solid', borderColor: 'divider', borderRadius: 3, position: 'sticky', top: 96 }}>
                 <Typography variant="h6" sx={{ fontFamily: '"Amiri", serif', fontWeight: 700, mb: 3, pb: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
@@ -268,18 +268,18 @@ const CheckoutPage = () => {
                   <span>{finalTotal} <Box component="span" sx={{ color: 'primary.main', fontSize: '0.85rem', fontFamily: '"Amiri", serif' }}>ج</Box></span>
                 </Stack>
 
-                <Button variant="contained" fullWidth size="large" disabled={isSubmitting} onClick={handleSubmit} startIcon={isSubmitting ? <CircularProgress size={20} color="inherit" /> : <CheckCircleIcon />} sx={{ display: { xs: 'none', lg: 'flex' }, mt: 3, height: 56, fontSize: '1.25rem', fontFamily: '"Amiri", serif', boxShadow: '0 4px 20px rgba(207, 115, 23, 0.3)' }}>
+                <Button variant="contained" fullWidth size="large" disabled={isSubmitting} onClick={handleSubmit} sx={{ml: 1, display: { xs: 'none', lg: 'flex' }, mt: 3, height: 56, fontSize: '1.25rem', fontFamily: '"Amiri", serif', boxShadow: '0 4px 20px rgba(207, 115, 23, 0.3)' }}>
                   {isSubmitting ? 'جاري الإرسال...' : 'تأكيد الطلب'}
                 </Button>
 
                 <Grid container spacing={2} sx={{ mt: 3, pt: 3, borderTop: '1px solid', borderColor: 'divider' }}>
-                  <Grid size ={{xs : 6}} >
+                  <Grid size={{ xs: 6 }} >
                     <Stack alignItems="center" spacing={0.5}>
                       <LockIcon sx={{ color: 'primary.main' }} />
                       <Typography sx={{ fontSize: '0.7rem', color: 'text.secondary' }}>دفع آمن</Typography>
                     </Stack>
                   </Grid>
-                  <Grid  size ={{xs : 6}}>
+                  <Grid size={{ xs: 6 }}>
                     <Stack alignItems="center" spacing={0.5}>
                       <LocalShippingIcon sx={{ color: 'primary.main' }} />
                       <Typography sx={{ fontSize: '0.7rem', color: 'text.secondary' }}>توصيل لجميع المحافظات</Typography>

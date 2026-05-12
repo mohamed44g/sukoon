@@ -1,36 +1,19 @@
 import { productsApi } from "@/services/api";
-import CategoryPage  from "./pageClient"; // افترضت إن عندك Client Component للعرض زي ما عملنا في الصفحة الرئيسية
+import CategoryPageClient from "./pageClient";
 
-// 1. تعريف نوع الـ Props
-interface ProductPageProps {
-  params: {
-    productId: string; // الرابط بيرجع سترينج دائماً
-  };
-}
-
-const ProductPage = async ({ params } : {params : any}) => {
-  // 2. استخراج الـ ID
-  // ملحوظة: في Next.js 15، الـ params قد تصبح Promise، لكن حالياً هذا هو الشكل القياسي
+const CategoryPage = async ({ params }: { params: any }) => {
   const { categoryId } = await params;
-
-  // 3. تحويله لرقم (لأن الـ API يتوقع number)
   const id = parseInt(categoryId);
 
-  // 4. جلب البيانات
-  // يفضل استخدام try-catch هنا عشان لو الـ ID غلط ميعملش Crash
-  let products = null;
+  let initialProducts: any = [];
   try {
-     products = await productsApi.getProductsByCategory(id);
+    // جلب أول 8 منتجات للفئة
+    initialProducts = await productsApi.getProductsByCategory(id, 1);
   } catch (error) {
-     console.error("Product not found");
+    console.error("Failed to fetch category products");
   }
 
-  if (!products) {
-    return <div>المنتج غير موجود</div>;
-  }
-
-  // 5. تمرير البيانات للـ Client Component
-  return <CategoryPage products={products} categoryId={id}/>;
+  return <CategoryPageClient initialProducts={initialProducts || []} categoryId={id} />;
 };
 
-export default ProductPage;
+export default CategoryPage;

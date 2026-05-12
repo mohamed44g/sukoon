@@ -126,11 +126,12 @@ export const authApi = {
 // قمت بإضافة config?: AxiosRequestConfig لكل الدوال
 // هذا يسمح لك بتمرير الـ Headers من الـ Server Components
 export const productsApi = {
-  getAll: async (config?: AxiosRequestConfig): Promise<Product[]> => {
+  getAll: async (page: number = 1, config?: AxiosRequestConfig): Promise<Product[]> => {
     return request<Product[]>({
       method: 'GET',
       url: '/products',
-      ...config, // دمج الإعدادات الإضافية
+      params: { page }, // إرسال رقم الصفحة
+      ...config,
     });
   },
 
@@ -160,14 +161,14 @@ export const productsApi = {
     });
   },
 
-  getOffers: async (config?: AxiosRequestConfig): Promise<Product[]> => {
+  // ✅ تعديل: استقبال page
+  getOffers: async (page: number = 1, config?: AxiosRequestConfig): Promise<Product[]> => {
     return request<Product[]>({
       method: 'GET',
       url: '/offers',
       ...config,
     });
   },
-
   getLatestOffers: async (config?: AxiosRequestConfig): Promise<Product[]> => {
     return request<Product[]>({
       method: 'GET',
@@ -204,10 +205,12 @@ export const productsApi = {
     });
   },
 
-  getProductsByCategory: async (id: number, config?: AxiosRequestConfig): Promise<void> => {
-    return request<void>({
+  // ✅ تعديل: استقبال page وتصحيح الـ Return Type
+  getProductsByCategory: async (id: number, page: number = 1, config?: AxiosRequestConfig): Promise<Product[]> => {
+    return request<Product[]>({
       method: 'GET',
       url: `/products/category/${id}`,
+      params: { page },
       ...config,
     });
   },

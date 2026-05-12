@@ -88,7 +88,6 @@ export default function CustomersClient({ initialData }: { initialData: any[] })
                         colorScheme: 'dark'
                     }}
                 />
-                <Button variant="contained" startIcon={<DownloadIcon />} sx={{ bgcolor: 'primary.main', color: 'primary.contrastText' }}>تصدير</Button>
               </Stack>
             </Stack>
 
@@ -123,7 +122,7 @@ export default function CustomersClient({ initialData }: { initialData: any[] })
                         </TableCell>
                         <TableCell sx={{ color: 'text.primary' }} dir="ltr">{c.customer_phone}</TableCell>
                         <TableCell sx={{ color: 'text.primary' }}>{c.orders_count} طلب</TableCell>
-                        <TableCell sx={{ color: 'primary.main', fontWeight: 700 }}>{c.total_spent.toLocaleString()} ر.س</TableCell>
+                        <TableCell sx={{ color: 'primary.main', fontWeight: 700 }}>{c.total_spent.toLocaleString()}ج</TableCell>
                         <TableCell><Chip size="small" label={c.tier} sx={{ bgcolor: tier.bgColor, color: tier.color }} /></TableCell>
                       </TableRow>
                     );

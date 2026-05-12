@@ -56,7 +56,7 @@ const ProductDetail = ({ product, onAddToCart, onBuyNow }: ProductDetailProps) =
   };
 
   return (
-    <Container maxWidth="xl" sx={{ py: 4 }}>
+    <Container maxWidth="xl" sx={{ py: 5, px: {xs: 4, sm: 0} }}>
        {/* ... (نفس الكود السابق للصور والعناوين) ... */}
        <Grid container spacing={{ xs: 4, lg: 8 }}>
         <Grid size = {{xs: 12, lg: 6}}>
@@ -158,7 +158,7 @@ const ProductDetail = ({ product, onAddToCart, onBuyNow }: ProductDetailProps) =
                 sx={{
                   fontFamily: '"Amiri", serif',
                   fontWeight: 700,
-                  fontSize: { xs: '2.5rem', md: '3.5rem' },
+                  fontSize: { xs: '2.3rem', md: '3.5rem' },
                   lineHeight: 1.2,
                 }}
               >

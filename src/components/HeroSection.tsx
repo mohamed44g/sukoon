@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import FilterVintageIcon from '@mui/icons-material/FilterVintage';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import FadeInUp from './FadeInUp';
+import Link from 'next/link';
 
 const MotionTypography = motion.create(Typography);
 
@@ -14,7 +15,7 @@ const HeroSection = () => {
         position: 'relative',
         width: '100%',
         height: "100vh",
-        backgroundImage: `linear-gradient(to bottom, rgba(26, 18, 11, 0.7), rgba(26, 18, 11, 1)), url("pic2.jpeg")`,
+        backgroundImage: `linear-gradient(to bottom, rgba(26, 18, 11, 0.3), rgba(26, 18, 11, 1)), url("background.jpeg")`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         overflow: 'hidden',
@@ -82,7 +83,7 @@ const HeroSection = () => {
             sx={{
               color: 'primary.main',
               letterSpacing: '0.3em',
-              fontSize: { xs: '0.85rem', md: '1rem' },
+              fontSize: { xs: '0.70rem', md: '1rem' },
               fontWeight: 700,
               textTransform: 'uppercase',
             }}
@@ -94,13 +95,13 @@ const HeroSection = () => {
 
         {/* Main Title */}
         <FadeInUp
-            delay = {0.2}
+          delay={0.2}
         >
           <Typography
             variant="h1"
             sx={{
               fontFamily: '"Amiri", serif',
-              fontSize: { xs: '2.5rem', md: '4.5rem', lg: '5.5rem' },
+              fontSize: { xs: '2.4rem', md: '4.5rem', lg: '5.5rem' },
               fontWeight: 700,
               lineHeight: 1.2,
               textShadow: '0 4px 20px rgba(0,0,0,0.5)',
@@ -114,7 +115,7 @@ const HeroSection = () => {
             <br />
             <Box component="span" sx={{ color: '#d4b89e' }}>وافتح هذا الباب</Box>
             <Box component="span" sx={{ display: 'block', fontSize: '1.75rem', mt: 2, color: 'primary.main', fontWeight: 300 }}>
-             
+
             </Box>
           </Typography>
         </FadeInUp>
@@ -126,7 +127,7 @@ const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.4 }}
           sx={{
             fontFamily: '"Amiri", serif',
-            fontSize: { xs: '1.25rem', md: '1.5rem' },
+            fontSize: { xs: '1.20rem', md: '1.5rem' },
             fontWeight: 300,
             lineHeight: 1.8,
             maxWidth: 800,
@@ -140,7 +141,7 @@ const HeroSection = () => {
 
         {/* Quote Box */}
         <FadeInUp
-          delay= {0.6}
+          delay={0.6}
           sx={{
             maxWidth: 700,
             mx: 'auto',
@@ -155,7 +156,7 @@ const HeroSection = () => {
           <Typography
             sx={{
               fontFamily: '"Amiri", serif',
-              fontSize: { xs: '1rem', md: '1.1rem' },
+              fontSize: { xs: '.85rem', md: '1.1rem' },
               fontStyle: 'italic',
               lineHeight: 2,
               color: 'rgba(255, 255, 255, 0.7)',
@@ -167,35 +168,35 @@ const HeroSection = () => {
 
         {/* CTA Button */}
         <FadeInUp
-          delay= {0.8}
+          delay={0.8}
         >
-          <Button
-            variant="outlined"
-            sx={{
-              px: 5,
-              py: 2,
-              borderRadius: 50,
-              fontSize: '1.1rem',
-              fontFamily: '"Amiri", serif',
-              borderColor: 'primary.main',
-              color: 'primary.main',
-              borderWidth: 1,
-              overflow: 'hidden',
-              position: 'relative',
-              transition: 'all 0.5s',
-              mt: 2,
-              '&:hover': {
-                bgcolor: 'primary.main',
-                color: 'white',
+          <Link href="/products">
+            <Button
+              variant="outlined"
+              sx={{
+                px: 5,
+                py: 2,
+                borderRadius: 50,
+                fontSize: '1rem',
+                fontFamily: '"Amiri", serif',
                 borderColor: 'primary.main',
-                boxShadow: '0 0 30px rgba(207, 115, 23, 0.3)',
-              },
-            }}
-            startIcon={<FilterVintageIcon sx={{ fontSize: 16 }} />}
-            endIcon={<ArrowBackIcon sx={{ fontSize: 18 }} />}
-          >
-            اكتشف المجموعة الملكية
-          </Button>
+                color: 'primary.main',
+                borderWidth: 1,
+                overflow: 'hidden',
+                position: 'relative',
+                transition: 'all 0.5s',
+                mt: 2,
+                '&:hover': {
+                  bgcolor: 'primary.main',
+                  color: 'white',
+                  borderColor: 'primary.main',
+                  boxShadow: '0 0 30px rgba(207, 115, 23, 0.3)',
+                },
+              }}
+              endIcon={<ArrowBackIcon sx={{ fontSize: 14, mr: 1 }} />}
+            >
+              اكتشف المجموعة الملكية
+            </Button></Link>
         </FadeInUp>
       </Container>
     </Box>

@@ -10,6 +10,7 @@ import type {
   DashboardData,
   Admin,
 } from '@/types';
+import api from '@/lib/api';
 
 // API Base URL
 const API_BASE_URL = 'https://sukoon-perfumes.com';
@@ -335,6 +336,31 @@ export const adminsApi = {
       method: 'DELETE',
       url: `/admins/${id}`,
     });
+  },
+};
+
+
+// أضف هذا الجزء داخل ملف خدمات الـ API الخاص بك (مثلاً @/services/api)
+export const offersApi = {
+  getAll: async (page: number = 1) => {
+    const response = await apiClient.get(`/offers?page=${page}`);
+    return response.data;
+  },
+  create: async (formData: FormData) => {
+    const response = await apiClient.post('/offers', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return response.data;
+  },
+  update: async (id: number, formData: FormData) => {
+    const response = await apiClient.patch(`/offers/${id}`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return response.data;
+  },
+  delete: async (id: number) => {
+    const response = await apiClient.delete(`/offers/${id}`);
+    return response.data;
   },
 };
 

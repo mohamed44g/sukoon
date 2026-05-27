@@ -47,7 +47,6 @@ const OffersPageClient = ({ initialProducts }: { initialProducts: Product[] }) =
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
       <Navbar />
-      {/* ... (Quote Section كما هو) ... */}
       <Box component="section" sx={{ py: { xs: 8, md: 12 }, px: 2, bgcolor: 'background.paper', borderBottom: '1px solid', borderColor: 'divider', position: 'relative', overflow: 'hidden' }}>
         <Box className="pattern-ornament" sx={{ position: 'absolute', inset: 0, opacity: 0.05 }} />
         <Container maxWidth="md" sx={{ position: 'relative', zIndex: 10, textAlign: 'center' }}>

@@ -1,0 +1,458 @@
+"use client"
+import { useState, useEffect, ChangeEvent } from 'react';
+import {
+    Box, Typography, Button, Stack, TextField, InputAdornment,
+    IconButton, Table, TableBody, TableCell, TableContainer,
+    TableHead, TableRow, Dialog, DialogTitle, DialogContent,
+    DialogActions, Grid, CircularProgress, Alert
+} from '@mui/material';
+import DashboardSidebar from '@/components/dashboard/DashboardSidebar';
+import MenuIcon from '@mui/icons-material/Menu';
+import AddIcon from '@mui/icons-material/Add';
+import SearchIcon from '@mui/icons-material/Search';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import CloseIcon from '@mui/icons-material/Close';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+
+import { OfferRow } from './offerRow';
+import { offersApi } from '@/services/api'; // استيراد الـ API الجديد لعروضك
+import { API_URL } from '@/lib/api';
+
+interface OfferFormData {
+    name: string;
+    description: string;
+    variants: { size: string; price: string; discount_price: string }[];
+}
+
+const defaultVariants = [
+    { size: '100ml', price: '', discount_price: '' },
+    { size: '50ml', price: '', discount_price: '' },
+    { size: '30ml', price: '', discount_price: '' }
+];
+
+const initialFormState: OfferFormData = {
+    name: '',
+    description: '',
+    variants: defaultVariants
+};
+
+export default function OffersClient({ initialOffers }: { initialOffers: any[] }) {
+    const [offers, setOffers] = useState<any[]>(initialOffers);
+    const [loading, setLoading] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
+
+    // Pagination
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
+
+    // Dialogs
+    const [openDialog, setOpenDialog] = useState(false);
+    const [editingOffer, setEditingOffer] = useState<any | null>(null);
+    const [formData, setFormData] = useState<OfferFormData>(initialFormState);
+
+    // Images
+    const [existingImages, setExistingImages] = useState<string[]>([]);
+    const [newFiles, setNewFiles] = useState<File[]>([]);
+
+    const [submitting, setSubmitting] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+    const [offerToDelete, setOfferToDelete] = useState<number | null>(null);
+
+    const fetchOffers = async (currentPage: number) => {
+        try {
+            setLoading(true);
+            const offersData = await offersApi.getAll(currentPage);
+            setOffers(offersData);
+            // الباك اند يرجع 8 عناصر في الصفحة الواحدة بناءً على كود الليمت
+            setHasMore(offersData.length === 8);
+        } catch (err) {
+            console.error("Failed to fetch offers", err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchOffers(page);
+    }, [page]);
+
+    const handleNextPage = () => { if (hasMore) setPage(prev => prev + 1); };
+    const handlePrevPage = () => { if (page > 1) setPage(prev => prev - 1); };
+
+    const handleOpenAdd = () => {
+        setEditingOffer(null);
+        setFormData(initialFormState);
+        setExistingImages([]);
+        setNewFiles([]);
+        setError(null);
+        setOpenDialog(true);
+    };
+
+    const handleOpenEdit = (offer: any) => {
+        setEditingOffer(offer);
+        setFormData({
+            name: offer.name,
+            description: offer.description || '',
+            variants: offer.variants.map((v: any) => ({
+                size: v.size,
+                price: v.price.toString(),
+                discount_price: v.discount_price ? v.discount_price.toString() : '',
+            })),
+        });
+        setExistingImages(offer.images || []);
+        setNewFiles([]);
+        setError(null);
+        setOpenDialog(true);
+    };
+
+    const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length > 0) {
+            setNewFiles(prev => [...prev, ...Array.from(e.target.files!)]);
+        }
+    };
+
+    const removeExistingImage = (indexToRemove: number) => {
+        setExistingImages(prev => prev.filter((_, index) => index !== indexToRemove));
+    };
+
+    const removeNewFile = (indexToRemove: number) => {
+        setNewFiles(prev => prev.filter((_, index) => index !== indexToRemove));
+    };
+
+    const handleVariantChange = (index: number, field: string, value: string) => {
+        const updatedVariants = [...formData.variants];
+        updatedVariants[index] = { ...updatedVariants[index], [field]: value };
+        setFormData(prev => ({ ...prev, variants: updatedVariants }));
+    };
+
+    const addVariant = () => {
+        setFormData(prev => ({
+            ...prev,
+            variants: [...prev.variants, { size: '', price: '', discount_price: '' }]
+        }));
+    };
+
+    const removeVariant = (index: number) => {
+        setFormData(prev => ({ ...prev, variants: prev.variants.filter((_, i) => i !== index) }));
+    };
+
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    };
+
+    const handleDeleteClick = (id: number) => {
+        setOfferToDelete(id);
+        setDeleteConfirmOpen(true);
+    };
+
+    const handleConfirmDelete = async () => {
+        if (offerToDelete) {
+            try {
+                await offersApi.delete(offerToDelete);
+                fetchOffers(page);
+                setDeleteConfirmOpen(false);
+            } catch (err) {
+                console.error("Delete failed", err);
+            }
+        }
+    };
+
+    const handleSubmit = async () => {
+        try {
+            setSubmitting(true);
+            setError(null);
+
+            // الباك اند يتوقع بيانات فورم (Multipart FormData) لعروض الـ Images والـ Variants المنتقلة كـ JSON stringified
+            const data = new FormData();
+            data.append('name', formData.name);
+            data.append('description', formData.description);
+
+            const validVariants = formData.variants.filter(v => v.price && v.size);
+            const formattedVariants = validVariants.map(v => ({
+                size: v.size,
+                price: Number(v.price),
+                discount_price: v.discount_price ? Number(v.discount_price) : null,
+            }));
+
+            data.append('variants', JSON.stringify(formattedVariants));
+
+            if (editingOffer) {
+                data.append('existingImages', JSON.stringify(existingImages));
+            }
+
+            newFiles.forEach(file => {
+                data.append('files', file); // مطابقة للـ FilesInterceptor('files') بالباك اند
+            });
+
+            if (editingOffer) {
+                await offersApi.update(editingOffer.id, data);
+            } else {
+                await offersApi.create(data);
+            }
+
+            await fetchOffers(page);
+            setOpenDialog(false);
+        } catch (err: any) {
+            console.error(err);
+            setError(err.response?.data?.message || 'حدث خطأ أثناء حفظ العرض');
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
+    const filteredOffers = offers.filter(o => o.name.includes(searchTerm));
+
+    return (
+        <Box sx={{ display: 'flex', height: '100vh', overflow: 'hidden', bgcolor: '#1A1611' }}>
+            <DashboardSidebar />
+
+            <Box component="main" sx={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+                {/* Mobile Header */}
+                <Box sx={{ height: 64, bgcolor: '#1A1611', borderBottom: '1px solid rgba(212, 165, 116, 0.15)', display: { xs: 'flex', lg: 'none' }, alignItems: 'center', justifyContent: 'space-between', px: 2 }}>
+                    <IconButton sx={{ color: 'text.primary' }}><MenuIcon /></IconButton>
+                    <Typography sx={{ color: 'text.primary', fontWeight: 700 }}>العروض</Typography>
+                    <Box sx={{ width: 24 }} />
+                </Box>
+
+                {/* Content Container */}
+                <Box sx={{ flex: 1, overflowY: 'auto', p: { xs: 2, md: 4 } }}>
+                    <Stack spacing={4} sx={{ maxWidth: 1400, mx: 'auto' }}>
+
+                        {/* Page Header */}
+                        <Stack direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" alignItems={{ md: 'flex-end' }} spacing={2}>
+                            <Box>
+                                <Typography variant="h4" sx={{ color: 'text.primary', fontWeight: 700 }}>إدارة العروض المنفصلة</Typography>
+                                <Typography variant="body2" sx={{ color: 'text.secondary' }}>أنشئ باقاتك التسويقية، العروض الموسمية، وحدث الأسعار والخصومات</Typography>
+                            </Box>
+                            <Button
+                                variant="contained"
+                                startIcon={<AddIcon />}
+                                onClick={handleOpenAdd}
+                                sx={{ bgcolor: 'primary.main', color: 'primary.contrastText', '&:hover': { bgcolor: 'primary.dark' } }}
+                            >
+                                إضافة عرض جديد
+                            </Button>
+                        </Stack>
+
+                        {/* Filter Search */}
+                        <TextField
+                            fullWidth
+                            placeholder="بحث باسم العرض (في الصفحة الحالية)..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            InputProps={{
+                                startAdornment: <InputAdornment position="start"><SearchIcon sx={{ color: 'text.secondary' }} /></InputAdornment>,
+                                style: { color: 'white' }
+                            }}
+                            sx={{ bgcolor: '#252019', borderRadius: 1, '& .MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(212, 165, 116, 0.3)' } }}
+                        />
+
+                        {/* Table */}
+                        <TableContainer sx={{ bgcolor: '#252019', borderRadius: 3, border: '1px solid rgba(212, 165, 116, 0.15)' }}>
+                            <Table>
+                                <TableHead>
+                                    <TableRow sx={{ bgcolor: '#1A1611' }}>
+                                        <TableCell align='right' sx={{ color: 'text.secondary' }}>العرض</TableCell>
+                                        <TableCell align='center' sx={{ color: 'text.secondary' }}>السعر الافتراضي</TableCell>
+                                        <TableCell align='center' sx={{ color: 'text.secondary' }}>الأحجام المتاحة</TableCell>
+                                        <TableCell align='center' sx={{ color: 'text.secondary' }}>الإجراءات</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {loading ? (
+                                        <TableRow><TableCell colSpan={4} align="center" sx={{ py: 5 }}><CircularProgress color="primary" /></TableCell></TableRow>
+                                    ) : filteredOffers.map((offer) => (
+                                        <OfferRow
+                                            key={offer.id}
+                                            offer={offer}
+                                            handleOpenEdit={handleOpenEdit}
+                                            handleDeleteClick={handleDeleteClick}
+                                        />
+                                    ))}
+                                    {!loading && filteredOffers.length === 0 && (
+                                        <TableRow><TableCell colSpan={4} align="center" sx={{ color: 'text.secondary', py: 3 }}>لا توجد عروض حالية</TableCell></TableRow>
+                                    )}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+
+                        {/* Pagination Controls */}
+                        <Stack direction="row" justifyContent="center" alignItems="center" gap={2} sx={{ mt: 2 }}>
+                            <Button
+                                variant="outlined"
+                                startIcon={<ArrowForwardIosIcon sx={{ fontSize: '12px !important' }} />}
+                                onClick={handlePrevPage}
+                                disabled={page === 1 || loading}
+                                sx={{ color: 'primary.main', borderColor: 'rgba(212, 165, 116, 0.3)' }}
+                            >
+                                السابق
+                            </Button>
+                            <Typography sx={{ color: 'white' }}>الصفحة {page}</Typography>
+                            <Button
+                                variant="outlined"
+                                endIcon={<ArrowBackIosIcon sx={{ fontSize: '12px !important' }} />}
+                                onClick={handleNextPage}
+                                disabled={!hasMore || loading}
+                                sx={{ color: 'primary.main', borderColor: 'rgba(212, 165, 116, 0.3)' }}
+                            >
+                                التالي
+                            </Button>
+                        </Stack>
+
+                    </Stack>
+                </Box>
+
+                {/* Dialog Modal (Add/Edit) */}
+                <Dialog
+                    open={openDialog}
+                    onClose={() => setOpenDialog(false)}
+                    maxWidth="md"
+                    fullWidth
+                    PaperProps={{ sx: { bgcolor: '#252019', color: 'text.primary', border: '1px solid rgba(212, 165, 116, 0.3)' } }}
+                >
+                    <DialogTitle sx={{ borderBottom: '1px solid rgba(212, 165, 116, 0.1)', color: 'primary.main' }}>
+                        {editingOffer ? 'تعديل بيانات العرض' : 'إضافة عرض ترويجي جديد'}
+                    </DialogTitle>
+                    <DialogContent sx={{ pt: 3 }}>
+                        <Stack spacing={3} sx={{ mt: 1 }}>
+                            {error && <Alert severity="error">{error}</Alert>}
+
+                            <TextField
+                                autoFocus
+                                label="اسم العرض"
+                                name="name"
+                                value={formData.name}
+                                onChange={handleInputChange}
+                                fullWidth
+                                required
+                                sx={{
+                                    '& .MuiOutlinedInput-root': { color: 'white', '& fieldset': { borderColor: 'rgba(212, 165, 116, 0.3)' } },
+                                    '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)' }
+                                }}
+                            />
+
+                            <TextField
+                                label="وصف وشروط العرض"
+                                name="description"
+                                value={formData.description}
+                                onChange={handleInputChange}
+                                multiline
+                                rows={3}
+                                fullWidth
+                                required
+                                sx={{
+                                    '& .MuiOutlinedInput-root': { color: 'white', '& fieldset': { borderColor: 'rgba(212, 165, 116, 0.3)' } },
+                                    '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)' }
+                                }}
+                            />
+
+                            {/* Variants / Prices Section */}
+                            <Box sx={{ p: 2, border: '1px dashed rgba(212, 165, 116, 0.3)', borderRadius: 2 }}>
+                                <Stack direction="row" justifyContent="space-between" mb={2}>
+                                    <Typography variant="subtitle1" sx={{ color: 'primary.main' }}>الأحجام والأسعار الخاصة بالعرض</Typography>
+                                    <Button size="small" startIcon={<AddIcon />} onClick={addVariant} sx={{ color: 'white' }}>إضافة حجم إضافي</Button>
+                                </Stack>
+
+                                {formData.variants.map((variant, index) => (
+                                    <Grid container spacing={2} key={index} alignItems="center" sx={{ mb: 2 }}>
+                                        <Grid item xs={4}>
+                                            <TextField
+                                                label="الحجم (مثال: 100ml)"
+                                                value={variant.size}
+                                                onChange={(e) => handleVariantChange(index, 'size', e.target.value)}
+                                                size="small" fullWidth
+                                                sx={{ input: { color: 'white' }, '& label': { color: '#aaa' }, '& fieldset': { borderColor: '#444' } }}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={4}>
+                                            <TextField
+                                                label="السعر الأصلي"
+                                                type="number"
+                                                value={variant.price}
+                                                onChange={(e) => handleVariantChange(index, 'price', e.target.value)}
+                                                size="small" fullWidth
+                                                sx={{ input: { color: 'white' }, '& label': { color: '#aaa' }, '& fieldset': { borderColor: '#444' } }}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={3}>
+                                            <TextField
+                                                label="السعر داخل العرض"
+                                                type="number"
+                                                value={variant.discount_price}
+                                                onChange={(e) => handleVariantChange(index, 'discount_price', e.target.value)}
+                                                size="small" fullWidth
+                                                sx={{ input: { color: 'white' }, '& label': { color: '#aaa' }, '& fieldset': { borderColor: '#444' } }}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={1}>
+                                            <IconButton onClick={() => removeVariant(index)} color="error">
+                                                <CloseIcon />
+                                            </IconButton>
+                                        </Grid>
+                                    </Grid>
+                                ))}
+                            </Box>
+
+                            {/* Images Manager */}
+                            <Box sx={{ mt: 2 }}>
+                                <Typography variant="subtitle1" sx={{ color: 'primary.main', mb: 2 }}>صور البانر أو العرض</Typography>
+                                <Grid container spacing={2} alignItems="center">
+                                    {existingImages.map((url, index) => (
+                                        <Grid item key={`existing-${index}`}>
+                                            <Box sx={{ position: 'relative', width: 100, height: 100, borderRadius: 2, overflow: 'hidden', border: '1px solid #D4A574' }}>
+                                                <img src={`${API_URL}${url}`} alt="existing" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                <IconButton size="small" onClick={() => removeExistingImage(index)} sx={{ position: 'absolute', top: 0, right: 0, bgcolor: 'rgba(0,0,0,0.6)', color: '#ff4444' }}>
+                                                    <CloseIcon fontSize="small" />
+                                                </IconButton>
+                                            </Box>
+                                        </Grid>
+                                    ))}
+
+                                    {newFiles.map((file, index) => (
+                                        <Grid item key={`new-${index}`}>
+                                            <Box sx={{ position: 'relative', width: 100, height: 100, borderRadius: 2, overflow: 'hidden', border: '2px dashed #4caf50' }}>
+                                                <img src={URL.createObjectURL(file)} alt="new" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                <IconButton size="small" onClick={() => removeNewFile(index)} sx={{ position: 'absolute', top: 0, right: 0, bgcolor: 'rgba(0,0,0,0.6)', color: '#ff4444' }}>
+                                                    <CloseIcon fontSize="small" />
+                                                </IconButton>
+                                            </Box>
+                                        </Grid>
+                                    ))}
+
+                                    <Grid item>
+                                        <Button component="label" sx={{ width: 100, height: 100, borderRadius: 2, border: '1px dashed #D4A574', display: 'flex', flexDirection: 'column', color: '#D4A574' }}>
+                                            <AddPhotoAlternateIcon sx={{ fontSize: 30, mb: 1 }} />
+                                            <Typography variant="caption">إضافة صورة</Typography>
+                                            <input type="file" hidden multiple accept="image/*" onChange={handleFileSelect} />
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+                            </Box>
+
+                        </Stack>
+                    </DialogContent>
+                    <DialogActions sx={{ p: 3, borderTop: '1px solid rgba(212, 165, 116, 0.1)' }}>
+                        <Button onClick={() => setOpenDialog(false)} sx={{ color: 'text.secondary' }}>إلغاء</Button>
+                        <Button variant="contained" onClick={handleSubmit} disabled={submitting} sx={{ bgcolor: 'primary.main', color: 'primary.contrastText' }}>
+                            {submitting ? <CircularProgress size={24} color="inherit" /> : (editingOffer ? 'حفظ التعديلات' : 'إطلاق العرض')}
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+
+                {/* Delete Confirmation */}
+                <Dialog open={deleteConfirmOpen} onClose={() => setDeleteConfirmOpen(false)} PaperProps={{ sx: { bgcolor: '#252019', color: 'text.primary', border: '1px solid rgba(239, 68, 68, 0.3)' } }}>
+                    <DialogTitle sx={{ color: 'error.main' }}>تأكيد الحذف</DialogTitle>
+                    <DialogContent><Typography>هل أنت متأكد من حذف هذا العرض نهائياً مع الصور الخاصة به؟</Typography></DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => setDeleteConfirmOpen(false)} sx={{ color: 'text.secondary' }}>إلغاء</Button>
+                        <Button onClick={handleConfirmDelete} variant="contained" color="error">تأكيد الحذف</Button>
+                    </DialogActions>
+                </Dialog>
+
+            </Box>
+        </Box>
+    );
+}

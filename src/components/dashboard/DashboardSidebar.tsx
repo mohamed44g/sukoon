@@ -27,8 +27,9 @@ interface NavItem {
 const navItems: NavItem[] = [
   { label: 'لوحة القيادة', href: '/dashboard', icon: <DashboardIcon /> },
   { label: 'المنتجات', href: '/dashboard/products', icon: <Inventory2Icon /> },
+  { label: 'العروض', href: '/dashboard/offers', icon: <Inventory2Icon /> },
   { label: 'الفئات', href: '/dashboard/categories', icon: <CategoryIcon /> },
-  { label: 'الطلبات', href: '/dashboard/orders', icon: <ShoppingCartIcon />},
+  { label: 'الطلبات', href: '/dashboard/orders', icon: <ShoppingCartIcon /> },
   { label: 'العملاء', href: '/dashboard/customers', icon: <GroupIcon /> },
   { label: 'المديرين', href: '/dashboard/admins', icon: <AdminPanelSettingsIcon /> },
 ];

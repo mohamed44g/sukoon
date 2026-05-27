@@ -358,7 +358,7 @@ export default function OffersClient({ initialOffers }: { initialOffers: any[] }
 
                                 {formData.variants.map((variant, index) => (
                                     <Grid container spacing={2} key={index} alignItems="center" sx={{ mb: 2 }}>
-                                        <Grid item xs={4}>
+                                        <Grid size={{ xs: 4 }}>
                                             <TextField
                                                 label="الحجم (مثال: 100ml)"
                                                 value={variant.size}
@@ -367,7 +367,7 @@ export default function OffersClient({ initialOffers }: { initialOffers: any[] }
                                                 sx={{ input: { color: 'white' }, '& label': { color: '#aaa' }, '& fieldset': { borderColor: '#444' } }}
                                             />
                                         </Grid>
-                                        <Grid item xs={4}>
+                                        <Grid size={{ xs: 4 }}>
                                             <TextField
                                                 label="السعر الأصلي"
                                                 type="number"
@@ -377,7 +377,7 @@ export default function OffersClient({ initialOffers }: { initialOffers: any[] }
                                                 sx={{ input: { color: 'white' }, '& label': { color: '#aaa' }, '& fieldset': { borderColor: '#444' } }}
                                             />
                                         </Grid>
-                                        <Grid item xs={3}>
+                                        <Grid size={{ xs: 3 }}>
                                             <TextField
                                                 label="السعر داخل العرض"
                                                 type="number"
@@ -387,7 +387,7 @@ export default function OffersClient({ initialOffers }: { initialOffers: any[] }
                                                 sx={{ input: { color: 'white' }, '& label': { color: '#aaa' }, '& fieldset': { borderColor: '#444' } }}
                                             />
                                         </Grid>
-                                        <Grid item xs={1}>
+                                        <Grid size={{ xs: 1 }}>
                                             <IconButton onClick={() => removeVariant(index)} color="error">
                                                 <CloseIcon />
                                             </IconButton>
@@ -401,7 +401,7 @@ export default function OffersClient({ initialOffers }: { initialOffers: any[] }
                                 <Typography variant="subtitle1" sx={{ color: 'primary.main', mb: 2 }}>صور البانر أو العرض</Typography>
                                 <Grid container spacing={2} alignItems="center">
                                     {existingImages.map((url, index) => (
-                                        <Grid item key={`existing-${index}`}>
+                                        <Grid  key={`existing-${index}`}>
                                             <Box sx={{ position: 'relative', width: 100, height: 100, borderRadius: 2, overflow: 'hidden', border: '1px solid #D4A574' }}>
                                                 <img src={`${API_URL}${url}`} alt="existing" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                                 <IconButton size="small" onClick={() => removeExistingImage(index)} sx={{ position: 'absolute', top: 0, right: 0, bgcolor: 'rgba(0,0,0,0.6)', color: '#ff4444' }}>
@@ -412,7 +412,7 @@ export default function OffersClient({ initialOffers }: { initialOffers: any[] }
                                     ))}
 
                                     {newFiles.map((file, index) => (
-                                        <Grid item key={`new-${index}`}>
+                                        <Grid  key={`new-${index}`}>
                                             <Box sx={{ position: 'relative', width: 100, height: 100, borderRadius: 2, overflow: 'hidden', border: '2px dashed #4caf50' }}>
                                                 <img src={URL.createObjectURL(file)} alt="new" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                                 <IconButton size="small" onClick={() => removeNewFile(index)} sx={{ position: 'absolute', top: 0, right: 0, bgcolor: 'rgba(0,0,0,0.6)', color: '#ff4444' }}>
@@ -422,7 +422,7 @@ export default function OffersClient({ initialOffers }: { initialOffers: any[] }
                                         </Grid>
                                     ))}
 
-                                    <Grid item>
+                                    <Grid>
                                         <Button component="label" sx={{ width: 100, height: 100, borderRadius: 2, border: '1px dashed #D4A574', display: 'flex', flexDirection: 'column', color: '#D4A574' }}>
                                             <AddPhotoAlternateIcon sx={{ fontSize: 30, mb: 1 }} />
                                             <Typography variant="caption">إضافة صورة</Typography>

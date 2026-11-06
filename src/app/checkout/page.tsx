@@ -12,10 +12,11 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useCart } from '@/contexts/CartContext';
 import { getDisplayPrice } from '@/types';
-import { egyptGovernorates, getShippingCost } from '@/data/egyptGovernorates';
+import { egyptGovernorates } from '@/data/egyptGovernorates';
 import { ordersApi } from '@/services/api';
 import { useRouter } from 'next/navigation';
 import { API_URL } from '@/lib/api';
+import api from '@/lib/api';
 
 const MotionBox = motion.create(Box);
 
@@ -26,6 +27,7 @@ const CheckoutPage = () => {
 
   // 👇 1. إضافة حالة النجاح
   const [isSuccess, setIsSuccess] = useState(false);
+  const [governorates, setGovernorates] = useState(egyptGovernorates);
 
   const [formData, setFormData] = useState({
     customerName: '',
@@ -35,7 +37,24 @@ const CheckoutPage = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const shippingCost = useMemo(() => getShippingCost(formData.governorate), [formData.governorate]);
+  useEffect(() => {
+    api.get('/shipping-rates').then(({ data }) => {
+      if (!Array.isArray(data) || data.length === 0) return;
+      setGovernorates(
+        data.map((rate: { governorate: string; shippingCost: number | string }) => ({
+          name: rate.governorate,
+          shippingCost: Number(rate.shippingCost),
+        })),
+      );
+    }).catch(() => {
+      // Keep the bundled rates as a temporary fallback if the API is unavailable.
+    });
+  }, []);
+
+  const shippingCost = useMemo(
+    () => governorates.find((gov) => gov.name === formData.governorate)?.shippingCost ?? 0,
+    [formData.governorate, governorates],
+  );
   const finalTotal = totalPrice + shippingCost;
 
   useEffect(() => {
@@ -202,7 +221,7 @@ const CheckoutPage = () => {
                       SelectProps={{ MenuProps: { PaperProps: { sx: { bgcolor: 'background.paper', maxHeight: 300 } } } }}
                     >
                       <MenuItem value="">اختر المحافظة</MenuItem>
-                      {egyptGovernorates.map((gov) => (
+                      {governorates.map((gov) => (
                         <MenuItem key={gov.name} value={gov.name}>
                           {gov.name} - ({gov.shippingCost} ج شحن)
                         </MenuItem>
